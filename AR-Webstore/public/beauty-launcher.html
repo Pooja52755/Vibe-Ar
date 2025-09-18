@@ -1,0 +1,68 @@
+<html>
+<head>
+    <title>Beauty Web Experience Launcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        h1 {
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+        .button {
+            background-color: #ff4081;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .button:hover {
+            background-color: #e91e63;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .button.blue {
+            background-color: #2196F3;
+        }
+        .button.blue:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <h1>Beauty Web Experience Launcher</h1>
+    <p>Click the button below to open the Beauty Web Experience directly. If it doesn't work in your current browser, try using a different browser.</p>
+    
+    <a href="file:///D:/ARGEN/Baunda/beauty-web/index.html" class="button">Open Beauty Web Experience</a>
+    
+    <p>If the above link doesn't work due to browser security restrictions, you can also try starting a local server:</p>
+    
+    <a href="../start-beauty-server.bat" download="start-beauty-server.bat" class="button blue">Download Server Launcher</a>
+    
+    <p>After downloading, double-click the file to start the server.</p>
+</body>
+</html>

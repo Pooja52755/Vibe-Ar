@@ -1,0 +1,110 @@
+/* Mobile-friendly fixes for Beauty Web App */
+
+/* Ensure proper sizing on mobile screens */
+.beauty-app {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix for ResizeObserver errors - prevent content jumps */
+body, .camera-container, .effect-panel, .settings-panel, #app {
+  min-height: 100vh;
+  height: auto !important;
+  position: relative;
+  contain: layout;
+  overflow: auto;
+}
+
+/* Add contain property to elements that trigger ResizeObserver */
+.viewer-container, .camera-view, video {
+  contain: layout size;
+  overflow: hidden;
+}
+
+/* Fix navigation menu for mobile */
+.tabs-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.tabs-container .tab {
+  padding: 8px 12px;
+  font-size: 14px;
+  min-width: auto;
+  margin: 3px;
+}
+
+/* Improve feature selection for touch devices */
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.features-list .feature-item {
+  min-height: 44px; /* Better touch target */
+  margin: 3px;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* Fix back button */
+.back-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Fix controls for mobile view */
+.control-panel {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+}
+
+.color-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 5px;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+  
+  .camera-view {
+    width: 100%;
+    height: auto;
+  }
+  
+  .settings-panel {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+/* Ensure buttons are large enough for touch */
+button, 
+.button, 
+select,
+.select select,
+input[type="range"] {
+  min-height: 44px;
+}
+
+/* Fix sliders for mobile */
+input[type="range"] {
+  width: 100%;
+}

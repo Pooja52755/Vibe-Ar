@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting to Beauty Experience</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    
+    .redirect-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #ff4081;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 5px solid #ff4081;
+      animation: spin 1s linear infinite;
+      margin: 20px 0;
+    }
+    
+    .manual-link {
+      display: inline-block;
+      margin-top: 20px;
+      background-color: #ff4081;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    // Redirect after a short delay
+    window.onload = function() {
+      setTimeout(function() {
+        window.location.href = 'ar-beauty-mobile.html';
+      }, 2000);
+    };
+  </script>
+</head>
+<body>
+  <div class="redirect-container">
+    <h1>Redirecting to Beauty Experience</h1>
+    <p>You will be automatically redirected to our mobile-optimized Beauty AR Experience in 2 seconds...</p>
+    <div class="loading"></div>
+    <p>If you are not redirected automatically, please click the button below:</p>
+    <a href="ar-beauty-mobile.html" class="manual-link">Go to Beauty Experience</a>
+  </div>
+</body>
+</html>

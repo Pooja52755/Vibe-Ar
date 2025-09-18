@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Beauty AR Experience - Mobile</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h1 {
+      font-size: 24px;
+      color: #ff4081;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+    
+    .description {
+      margin: 20px 0 30px;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    .demo-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      border: 1px solid #eee;
+    }
+    
+    .demo-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .demo-card h2 {
+      color: #ff4081;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .demo-card p {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    
+    .demo-button {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .demo-button:hover, .demo-button:active {
+      background-color: #e91e63;
+    }
+    
+    .demo-button.secondary {
+      background-color: #2196f3;
+      margin-top: 10px;
+    }
+    
+    .demo-button.secondary:hover, .demo-button.secondary:active {
+      background-color: #1976d2;
+    }
+    
+    .demo-button.alt {
+      background-color: #4caf50;
+      margin-top: 10px;
+    }
+    
+    .demo-button.alt:hover, .demo-button.alt:active {
+      background-color: #3d8b40;
+    }
+    
+    .tips-section {
+      background-color: #fff3cd;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+      border-left: 5px solid #ffc107;
+    }
+    
+    .tips-section h3 {
+      color: #856404;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .tips-section ul {
+      margin-left: 20px;
+    }
+    
+    .tips-section li {
+      margin-bottom: 8px;
+    }
+    
+    .back-link {
+      display: block;
+      text-align: center;
+      margin: 30px 0;
+      color: #666;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .back-link:hover {
+      color: #333;
+      text-decoration: underline;
+    }
+    
+    .status {
+      padding: 10px;
+      margin: 20px 0;
+      border-radius: 8px;
+      text-align: center;
+      display: none;
+    }
+    
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status.warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Beauty AR Experience</h1>
+      <p class="subtitle">Virtual Makeup Try-On</p>
+    </div>
+    
+    <div class="status" id="deviceStatus"></div>
+    
+    <div class="description">
+      <p>Experience our virtual makeup try-on with these Banuba-powered demos:</p>
+    </div>
+    
+    <div class="demo-card">
+      <h2>Official Beauty Demo</h2>
+      <p>Try the Banuba official beauty demo with a wide range of makeup styles and filters.</p>
+      <a href="https://demo.banuba.com/beauty/" target="_blank" rel="noopener noreferrer" class="demo-button">
+        Launch Beauty Experience
+      </a>
+    </div>
+    
+    <div class="demo-card">
+      <h2>Mobile-Optimized Version</h2>
+      <p>A streamlined version specifically designed for mobile devices with touch-friendly controls.</p>
+      <a href="https://makeup.banuba.com/" target="_blank" rel="noopener noreferrer" class="demo-button secondary">
+        Launch Mobile Experience
+      </a>
+    </div>
+    
+    <div class="demo-card">
+      <h2>Explore More AR Features</h2>
+      <p>Try more AR experiences including various makeup looks and effects.</p>
+      <a href="https://demo.banuba.com/" target="_blank" rel="noopener noreferrer" class="demo-button alt">
+        Explore All Demos
+      </a>
+    </div>
+    
+    <div class="tips-section">
+      <h3>Tips for Best Experience:</h3>
+      <ul>
+        <li><strong>Camera Access:</strong> Allow camera permissions when prompted</li>
+        <li><strong>Good Lighting:</strong> Use in a well-lit environment for best results</li>
+        <li><strong>Stable Position:</strong> Hold your device steady for accurate tracking</li>
+        <li><strong>Clear View:</strong> Ensure your face is clearly visible to the camera</li>
+        <li><strong>Try Different Browsers:</strong> If one browser doesn't work, try another</li>
+      </ul>
+    </div>
+    
+    <a href="javascript:history.back()" class="back-link">← Return to AR-Webstore</a>
+    
+    <div class="footer">
+      <p>Powered by Banuba SDK | AR Webstore &copy; 2025</p>
+    </div>
+  </div>
+
+  <script>
+    // Banuba token (optional - the hosted demos work without this)
+    const BANUBA_CLIENT_TOKEN = "Qk5CIB4Tnein3CnWcYtzk6lmUvtB6/n0jbEiBZLy4nkFTdXLD3fckEdJsy/D+de/HkaS2WJnnqQrEFtw9b+xde8ToV92HQuukysNu4enb0gvviZN4tMumQn+BcpZHpU+8qk9DMyLqdfckR/AmUopo3sHeOZCNy0UaaUcksgT+cpLoO9bdKWX/t8O8056r2rHG0kQt1LsuDq0rrvj8PPZu1nEUV4aAkvrzQbMx4+WNiaF9mE4nPXthgKmLlBG973zfuaqsnFoHJepOfymqhXqZwWTr4LgfJQb+81yjW9Xh1cncR0Syf1fUyGcLyYtdAqEiEsWHg8i440m0EMYRZH7sMXPxV/hnWdeAqliGn9mYZ2uIXg/UFFsTLH0CyEYtNXyT5wV7TfPvmnDAw+zS8joGeEqG8buq+5mEUgJ3cqtGctBUMzqqZ4fRkCaxSo8yl8yPpe4qzZ/COCyfUDFh7o1Ah5/CciF6BPLeaf/bL46t26UJwPvKifg9dBlRaFU4ZlUlaXpPQVj1Myaxacoz+dAXfjdekgeewqfwwWhTv6S1sf9tjkdZUOfEQNjrRjIkYwgaJ25AwS2EPrmPJ4ia5tXolI0ehQvT71HbKkSJCy2XDpUk/n/4z8cPI5afVr9hIf/1073sUyfDQNvbO1LUWiGEDw=";
+    
+    window.BANUBA_CLIENT_TOKEN = BANUBA_CLIENT_TOKEN;
+    
+    // Device detection
+    document.addEventListener('DOMContentLoaded', function() {
+      const statusElement = document.getElementById('deviceStatus');
+      
+      // Detect device type
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const browser = getBrowserName();
+      
+      function getBrowserName() {
+        const userAgent = navigator.userAgent;
+        let browser = "Unknown";
+        
+        if (userAgent.indexOf("Chrome") > -1) {
+          browser = "Chrome";
+        } else if (userAgent.indexOf("Safari") > -1) {
+          browser = "Safari";
+        } else if (userAgent.indexOf("Firefox") > -1) {
+          browser = "Firefox";
+        } else if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {
+          browser = "Internet Explorer";
+        } else if (userAgent.indexOf("Edge") > -1) {
+          browser = "Edge";
+        }
+        
+        return browser;
+      }
+      
+      // Show device info
+      statusElement.style.display = 'block';
+      
+      if (isMobile) {
+        if (isIOS) {
+          statusElement.innerHTML = `<strong>iOS Device Detected</strong> - Running ${browser} browser`;
+          statusElement.className = 'status success';
+        } else if (isAndroid) {
+          statusElement.innerHTML = `<strong>Android Device Detected</strong> - Running ${browser} browser`;
+          statusElement.className = 'status success';
+        } else {
+          statusElement.innerHTML = `<strong>Mobile Device Detected</strong> - Running ${browser} browser`;
+          statusElement.className = 'status success';
+        }
+      } else {
+        statusElement.innerHTML = `<strong>Desktop Device Detected</strong> - For best results, try on a mobile device.`;
+        statusElement.className = 'status warning';
+      }
+      
+      // Add event listeners for better analytics
+      document.querySelectorAll('.demo-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+          // You could add analytics here in the future
+          console.log(`Opening ${this.href} on ${isMobile ? 'mobile' : 'desktop'} device using ${browser}`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

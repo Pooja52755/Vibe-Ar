@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beauty AR Experience - Desktop</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f0f2f5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    h1 {
+      font-size: 36px;
+      color: #ff4081;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+    }
+    
+    .content {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .options-panel {
+      flex: 1;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .demo-section {
+      flex: 2;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .option-card {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid #ff4081;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .option-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .option-card h3 {
+      color: #ff4081;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    .option-card p {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .demo-button {
+      display: block;
+      width: 100%;
+      padding: 12px 0;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .demo-button:hover {
+      background-color: #e91e63;
+      transform: translateY(-2px);
+    }
+    
+    .demo-button.secondary {
+      background-color: #2196f3;
+    }
+    
+    .demo-button.secondary:hover {
+      background-color: #1976d2;
+    }
+    
+    .demo-button.alt {
+      background-color: #4caf50;
+    }
+    
+    .demo-button.alt:hover {
+      background-color: #3d8b40;
+    }
+    
+    .demo-frame {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 8px;
+      background-color: #f5f5f5;
+      margin-top: 20px;
+    }
+    
+    .demo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .demo-header h2 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .demo-controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .control-button {
+      padding: 8px 15px;
+      background-color: #f5f5f5;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #555;
+      transition: all 0.2s ease;
+    }
+    
+    .control-button:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .tips-section {
+      margin-top: 40px;
+      background-color: #fff3cd;
+      border-radius: 8px;
+      padding: 20px;
+      border-left: 5px solid #ffc107;
+    }
+    
+    .tips-section h3 {
+      color: #856404;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .tips-section ul {
+      margin-left: 20px;
+    }
+    
+    .tips-section li {
+      margin-bottom: 8px;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      color: #666;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .back-link:hover {
+      color: #333;
+      text-decoration: underline;
+    }
+    
+    .status {
+      padding: 10px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .status.warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+      }
+      
+      .demo-frame {
+        height: 450px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Beauty AR Experience</h1>
+      <p class="subtitle">Virtual Makeup Try-On</p>
+    </header>
+    
+    <div class="content">
+      <div class="options-panel">
+        <div class="option-card">
+          <h3>Banuba Beauty Demo</h3>
+          <p>Try the official Banuba beauty demo with a wide range of makeup styles and filters.</p>
+          <button class="demo-button" onclick="loadDemo('https://demo.banuba.com/beauty/')">
+            Load Banuba Demo
+          </button>
+        </div>
+        
+        <div class="option-card">
+          <h3>Original Beauty Web</h3>
+          <p>Access the original Beauty Web experience from the local installation.</p>
+          <button class="demo-button secondary" onclick="loadDemo('https://makeup.banuba.com/')">
+            Load Original Demo
+          </button>
+        </div>
+        
+        <div class="option-card">
+          <h3>More AR Features</h3>
+          <p>Explore more AR experiences with various makeup looks and effects.</p>
+          <button class="demo-button alt" onclick="loadDemo('https://demo.banuba.com/')">
+            Explore All Demos
+          </button>
+        </div>
+        
+        <div class="option-card">
+          <h3>Using Mobile?</h3>
+          <p>For the best experience on mobile devices, open our mobile-optimized version.</p>
+          <a href="/ar-beauty-mobile.html" class="demo-button" target="_blank">
+            Open Mobile Version
+          </a>
+        </div>
+        
+        <div class="status" id="deviceStatus"></div>
+        
+        <a href="javascript:history.back()" class="back-link">← Return to AR-Webstore</a>
+      </div>
+      
+      <div class="demo-section">
+        <div class="demo-header">
+          <h2>Beauty AR Experience</h2>
+          <div class="demo-controls">
+            <button class="control-button" onclick="refreshDemo()">Refresh</button>
+            <button class="control-button" onclick="openInNewTab()">Open in New Tab</button>
+          </div>
+        </div>
+        
+        <iframe id="demoFrame" class="demo-frame" src="about:blank" allowfullscreen allow="camera;microphone"></iframe>
+        
+        <div class="tips-section">
+          <h3>Tips for Best Experience:</h3>
+          <ul>
+            <li><strong>Camera Access:</strong> Allow camera permissions when prompted</li>
+            <li><strong>Good Lighting:</strong> Use in a well-lit environment for best results</li>
+            <li><strong>Position:</strong> Position yourself at a comfortable distance from the camera</li>
+            <li><strong>Browser Support:</strong> For best results, use Chrome or Firefox</li>
+            <li><strong>Alternative Options:</strong> If embedded demo doesn't work, try opening in a new tab</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>Powered by Banuba SDK | AR Webstore &copy; 2025</p>
+    </footer>
+  </div>
+
+  <script>
+    // Banuba token
+    const BANUBA_CLIENT_TOKEN = "Qk5CIB4Tnein3CnWcYtzk6lmUvtB6/n0jbEiBZLy4nkFTdXLD3fckEdJsy/D+de/HkaS2WJnnqQrEFtw9b+xde8ToV92HQuukysNu4enb0gvviZN4tMumQn+BcpZHpU+8qk9DMyLqdfckR/AmUopo3sHeOZCNy0UaaUcksgT+cpLoO9bdKWX/t8O8056r2rHG0kQt1LsuDq0rrvj8PPZu1nEUV4aAkvrzQbMx4+WNiaF9mE4nPXthgKmLlBG973zfuaqsnFoHJepOfymqhXqZwWTr4LgfJQb+81yjW9Xh1cncR0Syf1fUyGcLyYtdAqEiEsWHg8i440m0EMYRZH7sMXPxV/hnWdeAqliGn9mYZ2uIXg/UFFsTLH0CyEYtNXyT5wV7TfPvmnDAw+zS8joGeEqG8buq+5mEUgJ3cqtGctBUMzqqZ4fRkCaxSo8yl8yPpe4qzZ/COCyfUDFh7o1Ah5/CciF6BPLeaf/bL46t26UJwPvKifg9dBlRaFU4ZlUlaXpPQVj1Myaxacoz+dAXfjdekgeewqfwwWhTv6S1sf9tjkdZUOfEQNjrRjIkYwgaJ25AwS2EPrmPJ4ia5tXolI0ehQvT71HbKkSJCy2XDpUk/n/4z8cPI5afVr9hIf/1073sUyfDQNvbO1LUWiGEDw=";
+    
+    window.BANUBA_CLIENT_TOKEN = BANUBA_CLIENT_TOKEN;
+    
+    // Current demo URL
+    let currentDemoUrl = '';
+    
+    // Load a demo in the iframe
+    function loadDemo(url) {
+      currentDemoUrl = url;
+      document.getElementById('demoFrame').src = url;
+    }
+    
+    // Refresh the current demo
+    function refreshDemo() {
+      const frame = document.getElementById('demoFrame');
+      frame.src = 'about:blank';
+      setTimeout(() => {
+        frame.src = currentDemoUrl;
+      }, 100);
+    }
+    
+    // Open the current demo in a new tab
+    function openInNewTab() {
+      if (currentDemoUrl) {
+        window.open(currentDemoUrl, '_blank');
+      } else {
+        window.open('https://demo.banuba.com/beauty/', '_blank');
+      }
+    }
+    
+    // Device detection
+    document.addEventListener('DOMContentLoaded', function() {
+      const statusElement = document.getElementById('deviceStatus');
+      
+      // Detect device type
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const browser = getBrowserName();
+      
+      function getBrowserName() {
+        const userAgent = navigator.userAgent;
+        let browser = "Unknown";
+        
+        if (userAgent.indexOf("Chrome") > -1) {
+          browser = "Chrome";
+        } else if (userAgent.indexOf("Safari") > -1) {
+          browser = "Safari";
+        } else if (userAgent.indexOf("Firefox") > -1) {
+          browser = "Firefox";
+        } else if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {
+          browser = "Internet Explorer";
+        } else if (userAgent.indexOf("Edge") > -1) {
+          browser = "Edge";
+        }
+        
+        return browser;
+      }
+      
+      // Show device info
+      statusElement.style.display = 'block';
+      
+      if (isMobile) {
+        statusElement.innerHTML = `<strong>Mobile Device Detected</strong> - For best experience, use our <a href="/ar-beauty-mobile.html" target="_blank">mobile version</a>`;
+        statusElement.className = 'status warning';
+      } else {
+        statusElement.innerHTML = `<strong>Desktop Detected</strong> - Using ${browser} browser`;
+        statusElement.className = 'status success';
+        
+        // Load default demo for desktop
+        loadDemo('https://demo.banuba.com/beauty/');
+      }
+    });
+  </script>
+</body>
+</html>

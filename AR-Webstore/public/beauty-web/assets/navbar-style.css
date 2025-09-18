@@ -1,0 +1,67 @@
+/* Custom navbar styling for Beauty AR */
+
+.navbar {
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: 60px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.navbar-item.back-button {
+  background-color: #ff4081;
+  color: white;
+  border-radius: 20px;
+  padding: 5px 15px;
+  margin-right: 10px;
+  font-weight: bold;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(255,64,129,0.3);
+}
+
+.navbar-item.title {
+  color: #4a6aed;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.navbar-menu {
+  margin-left: auto;
+}
+
+.navbar-burger, .menu-button {
+  background-color: #4a6aed;
+  color: white;
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(74,106,237,0.3);
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+  .navbar-menu {
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(10,10,10,0.1);
+    padding: 0.5rem 0;
+    border-radius: 8px;
+  }
+  
+  .navbar-item {
+    padding: 0.7rem 1.5rem;
+    color: #4a6aed;
+  }
+}

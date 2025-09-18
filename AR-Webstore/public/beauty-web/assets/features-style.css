@@ -1,0 +1,113 @@
+/* Styling for feature menu items */
+
+/* Panel container */
+.panel {
+  background-color: #f0f4ff;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Panel header */
+.panel-heading {
+  background-color: transparent;
+  color: #4a6aed;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+  padding: 15px 10px;
+  border-bottom: none;
+}
+
+/* Feature items */
+.panel-block {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 6px 10px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.panel-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Feature icons */
+.panel-block .icon {
+  color: #4a6aed;
+  margin-right: 15px;
+  width: 24px;
+  height: 24px;
+}
+
+/* Feature text */
+.panel-block span {
+  color: #4a6aed;
+  font-weight: 500;
+  font-size: 16px;
+  flex: 1;
+}
+
+/* Right arrow icon */
+.panel-block .icon.is-right {
+  margin-left: auto;
+  margin-right: 0;
+  color: #4a6aed;
+  opacity: 0.5;
+}
+
+/* Selected features section */
+.selected-features {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.selected-features-title {
+  color: #4a6aed;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.no-features-text {
+  color: #999;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Download button */
+.download-button {
+  background-color: #4a6aed;
+  color: white;
+  border-radius: 25px;
+  padding: 8px 20px;
+  font-weight: 500;
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  box-shadow: 0 3px 10px rgba(74, 106, 237, 0.2);
+}
+
+.reset-button {
+  background-color: transparent;
+  color: #999;
+  font-size: 14px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

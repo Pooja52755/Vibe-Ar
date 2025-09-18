@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Beauty AR Experience</title>
+  <!-- Emergency viewport fix for mobile devices -->
+  <script src="MobileViewportFix.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      text-align: center;
+      padding: 15px;
+      color: #333;
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #ff4081;
+      margin-bottom: 15px;
+    }
+    
+    p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #ff4081;
+      animation: spin 1s linear infinite;
+      margin: 20px 0;
+    }
+    
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .ar-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #ff4081;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .ar-button:hover {
+      background-color: #e91e63;
+      transform: translateY(-2px);
+    }
+    
+    .ar-button.secondary {
+      background-color: #2196f3;
+    }
+    
+    .ar-button.secondary:hover {
+      background-color: #1976d2;
+    }
+    
+    .device-info {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e3f2fd;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #0d47a1;
+    }
+    
+    .alert {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Mobile-specific adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+        width: 100%;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+      
+      .ar-button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+      }
+      
+      .button-group {
+        width: 100%;
+      }
+      
+      .alert, .device-info {
+        font-size: 13px;
+        padding: 8px;
+      }
+    }
+    
+    /* iPhone specific fixes */
+    @supports (-webkit-touch-callout: none) {
+      body {
+        padding-left: max(15px, env(safe-area-inset-left));
+        padding-right: max(15px, env(safe-area-inset-right));
+        padding-bottom: max(15px, env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+  <script>
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check device type
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const deviceInfo = document.getElementById('deviceInfo');
+      
+      // Set device info text
+      if (isMobile) {
+        deviceInfo.textContent = 'Mobile device detected - Redirecting to mobile-optimized experience';
+        
+        // Update buttons for mobile
+        document.getElementById('primaryButton').href = 'beauty-mobile-simplified.html';
+        document.getElementById('primaryButton').textContent = 'Go to Mobile Experience';
+        
+        // Auto-redirect to mobile version after a delay
+        setTimeout(function() {
+          window.location.href = 'beauty-mobile-simplified.html';
+        }, 2000);
+      } else {
+        deviceInfo.textContent = 'Desktop device detected - Redirecting to desktop experience';
+        
+        // Update buttons for desktop
+        document.getElementById('primaryButton').href = 'beauty-web/index.html';
+        
+        // Auto-redirect to desktop version after a delay
+        setTimeout(function() {
+          window.location.href = 'beauty-web/index.html';
+        }, 2000);
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Beauty AR Experience</h1>
+    <p>Detecting your device and redirecting to the appropriate experience...</p>
+    
+    <div class="loading"></div>
+    
+    <div class="alert">
+      <strong>Note:</strong> We've created optimized experiences for both mobile and desktop devices for the best AR makeup try-on experience.
+    </div>
+    
+    <div id="deviceInfo" class="device-info">
+      Detecting your device type...
+    </div>
+    
+    <div class="button-group">
+      <p>If you are not redirected automatically, please click the button below:</p>
+      <a id="primaryButton" href="beauty-web/index.html" class="ar-button">Go to Beauty Experience</a>
+      <a href="/" class="ar-button secondary">
+        Return to Homepage
+      </a>
+    </div>
+  </div>
+</body>
+</html>

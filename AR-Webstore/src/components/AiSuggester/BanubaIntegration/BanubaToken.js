@@ -1,0 +1,9 @@
+/**
+ * Banuba Client Token for beauty filters
+ * This token is required for Banuba SDK to work correctly
+ */
+
+export const BANUBA_CLIENT_TOKEN = 
+  "Qk5CIB4Tnein3CnWcYtzk6lmUvtB6/n0jbEiBZLy4nkFTdXLD3fckEdJsy/D+de/HkaS2WJnnqQrEFtw9b+xde8ToV92HQuukysNu4enb0gvviZN4tMumQn+BcpZHpU+8qk9DMyLqdfckR/AmUopo3sHeOZCNy0UaaUcksgT+cpLoO9bdKWX/t8O8056r2rHG0kQt1LsuDq0rrvj8PPZu1nEUV4aAkvrzQbMx4+WNiaF9mE4nPXthgKmLlBG973zfuaqsnFoHJepOfymqhXqZwWTr4LgfJQb+81yjW9Xh1cncR0Syf1fUyGcLyYtdAqEiEsWHg8i440m0EMYRZH7sMXPxV/hnWdeAqliGn9mYZ2uIXg/UFFsTLH0CyEYtNXyT5wV7TfPvmnDAw+zS8joGeEqG8buq+5mEUgJ3cqtGctBUMzqqZ4fRkCaxSo8yl8yPpe4qzZ/COCyfUDFh7o1Ah5/CciF6BPLeaf/bL46t26UJwPvKifg9dBlRaFU4ZlUlaXpPQVj1Myaxacoz+dAXfjdekgeewqfwwWhTv6S1sf9tjkdZUOfEQNjrRjIkYwgaJ25AwS2EPrmPJ4ia5tXolI0ehQvT71HbKkSJCy2XDpUk/n/4z8cPI5afVr9hIf/1073sUyfDQNvbO1LUWiGEDw=";
+
+export default BANUBA_CLIENT_TOKEN;

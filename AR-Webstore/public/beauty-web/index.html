@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Beauty AR | AR-Webstore</title>
+    <link
+      rel="icon"
+      href="../favicon.ico"
+    />
+    <!-- Fix for ResizeObserver errors -->
+    <script src="./assets/ResizeObserverFix.js"></script>
+    <!-- Offline detector and cache handler -->
+    <script src="./assets/OfflineDetector.js"></script>
+    <!-- Load our mobile fixes CSS and script -->
+    <link rel="stylesheet" href="./assets/mobile-fixes.css">
+    <script src="./assets/FixBeautyApp.js"></script>
+    <link rel="stylesheet" href="assets/buefy.min.css" />
+    <style>
+      /* Fix for back button and selected features */
+      .back-button {
+        background-color: #485FC7 !important;
+        color: white !important;
+        border-radius: 4px !important;
+        font-weight: bold !important;
+        margin-right: 10px !important;
+      }
+      
+      /* Make all features visible and clickable */
+      .panel-block {
+        pointer-events: auto !important;
+        opacity: 1 !important;
+        cursor: pointer !important;
+      }
+      
+      /* Fix active feature styling */
+      .panel-block.is-active {
+        background-color: #F0F4FF !important;
+        border-left: 3px solid #485FC7 !important;
+        color: #485FC7 !important;
+        font-weight: bold !important;
+      }
+      
+      /* Fix mobile layout for panels */
+      @media (max-width: 768px) {
+        .bnb-layout__panel, 
+        .bnb-layout__side, 
+        .panel {
+          width: 100% !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          box-sizing: border-box !important;
+        }
+      }
+      
+      /* Selected features panel styling */
+      #selected-features-panel {
+        margin-top: 20px !important;
+        border-radius: 4px !important;
+      }
+      
+      #selected-features-panel .panel-heading {
+        background-color: #485FC7 !important;
+        color: white !important;
+      }
+    </style>
+    <!-- Additional Android-specific fixes -->
+    <style>
+      /* Force proper sizing for Android devices */
+      @media screen and (max-width: 768px) {
+        html, body, #webar {
+          width: 100vw !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          background-color: #f0f4ff !important;
+        }
+        
+        /* Fix for file upload buttons */
+        .file, .file-label, .file-cta, .upload, .button {
+          max-width: 90vw !important;
+          width: auto !important;
+          position: relative !important;
+          left: 0 !important;
+          white-space: normal !important;
+          word-break: break-word !important;
+          height: auto !important;
+          min-height: 2.5em !important;
+        }
+        
+        /* Fix file button text wrapping */
+        .file-label span, .button span, .file-name {
+          white-space: normal !important;
+          overflow: visible !important;
+          word-break: break-word !important;
+        }
+        
+        /* Fix sidebars and panels */
+        .sidebar, .sidebar-panel, .panel, .bnb-layout__side, .bnb-settings, .bnb-features {
+          width: 100% !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          position: relative !important;
+          left: 0 !important;
+          background-color: #f0f4ff !important;
+          border: none !important;
+          box-shadow: none !important;
+          padding: 10px !important;
+        }
+        
+        /* Style the header */
+        .navbar {
+          background-color: #fff !important;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+          height: 60px !important;
+        }
+        
+        /* Style the navbar brand */
+        .navbar-brand {
+          height: 60px !important;
+        }
+        
+        /* Style the header title */
+        .navbar-item.title {
+          color: #4a6aed !important;
+          font-weight: 600 !important;
+        }
+        
+        /* Style the back button */
+        .navbar-item.back-button, .navbar-burger {
+          background-color: #ff4081 !important;
+          color: white !important;
+          border-radius: 20px !important;
+          margin: 10px !important;
+          padding: 5px 15px !important;
+          height: 40px !important;
+          box-shadow: 0 2px 5px rgba(255,64,129,0.3) !important;
+        }
+        
+        /* Style the menu button */
+        .navbar-burger, .menu-button {
+          background-color: #4a6aed !important;
+          border-radius: 20px !important;
+        }
+        
+        /* Style feature icons */
+        .panel-block .icon {
+          color: #4a6aed !important;
+          margin-right: 15px !important;
+          width: 24px !important;
+          height: 24px !important;
+        }
+        
+        /* Style feature text */
+        .panel-block span {
+          color: #4a6aed !important;
+          font-weight: 500 !important;
+        }
+        
+        /* Style menu arrows */
+        .panel-block .icon.is-right {
+          margin-left: auto !important;
+        }
+      }
+    </style>
+    <!-- Android-specific fixes -->
+    <style>
+      /* Force proper sizing for Android devices */
+      @supports (-webkit-touch-callout: none) {
+        html, body, #webar {
+          width: 100vw !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+        }
+        
+        /* Fix for file upload buttons */
+        .file, .file-label, .file-cta, .upload {
+          max-width: 90vw !important;
+          width: auto !important;
+          position: relative !important;
+          left: 0 !important;
+        }
+        
+        /* Fix for sidebars */
+        .sidebar, .sidebar-panel, .panel {
+          width: 100% !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          position: relative !important;
+          left: 0 !important;
+        }
+      }
+    </style>
+    <style>
+      html,
+      body,
+      #webar {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #webar {
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      #webar > canvas {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain !important;
+      }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        .bnb-layout {
+          width: 100vw !important;
+          max-width: 100vw !important;
+          display: flex !important;
+          flex-direction: column !important;
+          overflow-x: hidden !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+        }
+        
+        .bnb-layout__side {
+          width: 100% !important;
+          max-width: 100% !important;
+          position: absolute !important;
+          left: 0 !important;
+          margin: 0 !important;
+          z-index: 100 !important;
+          padding-right: 20px !important;
+          box-sizing: border-box !important;
+        }
+        
+        .bnb-layout__content {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        
+        .mobile-fix {
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: hidden !important;
+        }
+        
+        /* Ensure all content fits within viewport width */
+        *, *::before, *::after {
+          max-width: 100vw !important;
+          box-sizing: border-box !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="mobile-optimized">
+    <bnb-app class="mobile-fix">
+      <div id="webar"></div>
+    </bnb-app>
+
+    <script src="BanubaClientToken.js"></script>
+    <script src="BackToStore.js"></script>
+    <script src="MobileViewportFix.js"></script>
+    <script src="LayoutPatch.js"></script>
+    <script src="MobileUIFixes.js"></script>
+    <script src="ForceLayout.js"></script>
+    <script src="StandaloneMenu.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+    <script type="module">
+      import {
+        Effect,
+        Webcam,
+        Image,
+        Player,
+        Module,
+        ImageCapture,
+        Dom,
+      } from "https://cdn.jsdelivr.net/npm/@banuba/webar@1.17.0/dist/BanubaSDK.browser.esm.min.js";
+      import { zipSync as zip } from "https://cdn.jsdelivr.net/npm/fflate@0.6.4/esm/browser.min.js";
+      import App from "./src/app.js";
+      import Store from "./src/store.js";
+
+      App.$children[0].toggleLoading();
+
+      !(async () => {
+        let input;
+        let source;
+        const [player, modules, effect] = await Promise.all([
+          Player.create({
+            devicePixelRatio: 1,
+            clientToken: window.BANUBA_CLIENT_TOKEN,
+          }),
+          Module.preload(
+            ["background", "eyes", "face_tracker", "hair", "lips", "skin"].map(
+              (m) =>
+                `https://cdn.jsdelivr.net/npm/@banuba/webar@1.17.0/dist/modules/${m}.zip`
+            )
+          ),
+          Effect.preload("assets/Makeup_new_morphs.zip"),
+        ]);
+        await player.addModule(...modules);
+        await player.applyEffect(effect);
+
+        App.$children[0].toggleLoading();
+
+        //#region fps count
+        const fps = {
+          cam: 0,
+          processing: 0,
+          render: 0,
+        };
+        player.addEventListener("framereceived", () => fps.cam++);
+        player.addEventListener(
+          "frameprocessed",
+          ({ detail }) => (fps.processing = 1000 / detail.averagedDuration)
+        );
+        player.addEventListener("framerendered", () => fps.render++);
+
+        setInterval(() => {
+          Object.entries(fps).forEach(([name, value]) => {
+            fps[name] = 0;
+            document.getElementById(name).innerText = value.toFixed(1);
+          });
+        }, 1000);
+        //#endregion
+
+        const useWebcam = async () => {
+          source = "webcam";
+          player.use((input = new Webcam()));
+          player.play();
+        };
+        const useImage = async (file) => {
+          source = "image";
+          player.use((input = new Image(file)));
+          player.play();
+        };
+        const takeScreenshot = async () => {
+          const capture = new ImageCapture(player);
+          download(await capture.takePhoto(), "WebAR_Beauty");
+        };
+        const stop = async () => {
+          input?.stop?.();
+        };
+
+        const resizeObserver = new ResizeObserver(
+          ([{ target, contentRect }]) =>
+            (target.style.objectFit =
+              contentRect.height > contentRect.width ? "contain" : "cover")
+        );
+        const render = () => {
+          Dom.render(player, "#webar");
+          resizeObserver.observe(document.querySelector("#webar > canvas"));
+        };
+        const unmount = () => Dom.unmount("#webar");
+
+        const writeFile = (file) =>
+          (file instanceof File ? Promise.resolve(file) : fetch(file))
+            .then((res) => res.arrayBuffer())
+            .then((buffer) => effect.writeFile(file.name || file, buffer));
+        const evalJs = (code, files = []) =>
+          Promise.all(files.filter(Boolean).map(writeFile)).then(() =>
+            effect.evalJs(code)
+          );
+
+        const visibilityChangeListener = async () => {
+          const isActive = document.visibilityState === "visible";
+
+          if (source !== "webcam") return;
+
+          if (!isActive) {
+            input.stop();
+          } else {
+            await useWebcam();
+          }
+        };
+        document.addEventListener("visibilitychange", visibilityChangeListener);
+
+        App.$on("camera-request", () => useWebcam().then(render));
+        App.$on("photo-uploaded", (file) => useImage(file).then(render));
+        App.$on("screenshot-request", takeScreenshot);
+        App.$on("close-request", stop), App.$on("close-request", unmount);
+        App.$on("preset-download-request", (preset) =>
+          download(appendToConfig(effect, presetToCode(preset)), "Makeup.zip")
+        );
+        App.$on("preset-copy-request", (preset) =>
+          copyToClipboard(presetToCode(preset))
+        );
+        App.$on("close-request", stop), App.$on("close-request", unmount);
+
+        Store.on("look:changed", ({ texture = "" }) =>
+          evalJs(`Makeup.set("${texture}")`, [texture])
+        );
+        Store.on("face-makeup:changed", (name, { color, enabled }) =>
+          evalJs(`Makeup.${name}("${enabled ? color : "0 0 0 0"}")`)
+        );
+        Store.on("eyes-makeup:changed", (name, { color, enabled }) =>
+          evalJs(`Makeup.${name}("${enabled ? color : "0 0 0 0"}")`)
+        );
+        Store.on("skin:changed", (name, { color, enabled, strength }) => {
+          typeof strength !== "undefined"
+            ? evalJs(`Skin.${name}(${strength})`)
+            : evalJs(`Skin.${name}("${enabled ? color : "0 0 0 0"}")`);
+        });
+        Store.on("morphs:changed", (name, { strength }) =>
+          evalJs(`FaceMorph.${name}(${strength})`)
+        );
+        Store.on("teeth-whitening:changed", ({ strength }) =>
+          evalJs(`Teeth.whitening(${strength})`)
+        );
+        Store.on("eyes:changed", (name, { enabled, color, strength }) => {
+          typeof strength !== "undefined"
+            ? evalJs(`Eyes.${name}(${strength})`)
+            : evalJs(`Eyes.${name}("${enabled ? color : "0 0 0 0"}")`);
+        });
+        Store.on("eyelashes:changed", ({ enabled, color }) => {
+          evalJs(`Eyelashes.color("${enabled ? color : "0 0 0 0"}")`);
+        });
+        Store.on("brows:changed", ({ enabled, color }) =>
+          evalJs(`Brows.color("${enabled ? color : "0 0 0 0"}")`)
+        );
+        Store.on("softlight:changed", ({ strength }) =>
+          evalJs(`Softlight.strength(${strength})`)
+        );
+        Store.on("hair:changed", ({ enabled, color }) =>
+          evalJs(
+            `Hair.color(${enabled ? color.map((c) => `"${c}"`) : `"0 0 0 0"`})`
+          )
+        );
+        Store.on("lipstick:changed", ({ enabled, color }) =>
+          evalJs(`Lips.color("${enabled ? color : "0 0 0 0"}")`)
+        );
+        Store.on("lipstick-params:changed", (name, { value }) =>
+          evalJs(`Lips.${name}(${value})`)
+        );
+        Store.on("background:changed", async (name, value) => {
+          if (name === "texture" && typeof value === "string")
+            value = await createFile(value);
+          evalJs(
+            `Background.${name}(${
+              value instanceof File
+                ? `"${value.name}"`
+                : typeof value === "string"
+                ? `"${value}"`
+                : value
+            })`,
+            value instanceof File ? [value] : []
+          );
+        });
+        Store.on("lut:changed", ({ texture = "" }) =>
+          evalJs(`Filter.set("${texture}")`, [texture])
+        );
+      })();
+
+      /* Utils */
+      function appendToConfig(effect, code) {
+        code = new TextEncoder().encode(code);
+        // these properties are private, don't use them in your code
+        const data = effect["_resource"]["_data"];
+        const cfg = data["config.js"];
+
+        return { ...data, "config.js": new Uint8Array([...cfg, ...code]) };
+      }
+
+      function presetToCode({
+        background,
+        brows,
+        eyelashes,
+        eyes,
+        eyesMakeup,
+        hair,
+        lipstick,
+        lipstickParams,
+        look,
+        lut,
+        morphs,
+        faceMakeup,
+        skin,
+        softlight,
+        teethWhitening,
+      }) {
+        const commands = [];
+
+        if (background)
+          for (const [name, value] of Object.entries(background))
+            commands.push(
+              `Background.${name}(${
+                typeof value === "string" ? `"${value}"` : value
+              })`
+            );
+
+        if (brows) commands.push(`Brows.color("${brows}")`);
+
+        if (eyelashes) commands.push(`Eyelashes.color("${eyelashes}")`);
+
+        if (eyes)
+          for (const [name, value] of Object.entries(eyes))
+            commands.push(`Eyes.${name}(${value})`);
+
+        if (eyesMakeup)
+          for (const [name, value] of Object.entries(eyesMakeup))
+            commands.push(`Makeup.${name}("${value}")`);
+
+        if (hair) commands.push(`Hair.color(${hair.map((c) => `"${c}"`)})`);
+
+        if (lipstick) commands.push(`Lips.color("${lipstick}")`);
+
+        if (lipstickParams)
+          for (const [name, value] of Object.entries(lipstickParams))
+            commands.push(`Lips.${name}(${value})`);
+
+        if (look) commands.push(`Makeup.set("${look}")`);
+
+        if (lut) commands.push(`Filter.set("${lut}")`);
+
+        if (morphs)
+          for (const name in morphs)
+            commands.push(`FaceMorph.${name}(${morphs[name]})`);
+
+        if (faceMakeup)
+          for (const [name, value] of Object.entries(faceMakeup))
+            commands.push(`Makeup.${name}("${value}")`);
+
+        if (skin)
+          for (const [name, value] of Object.entries(skin))
+            commands.push(
+              `Skin.${name}(${
+                typeof value === "string" ? `"${value}"` : value
+              })`
+            );
+
+        if (softlight) commands.push(`Softlight.strength(${softlight})`);
+
+        if (teethWhitening) commands.push(`Teeth.whitening(${teethWhitening})`);
+
+        return commands.join(";\n");
+      }
+
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+      }
+
+      function download(blob, name) {
+        if (!(blob instanceof Blob)) blob = new Blob([zip(blob)]);
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      async function createFile(url) {
+        const data = await fetch(url).then((response) => response.blob());
+        return new File([data], url);
+      }
+    </script>
+    <!-- Back to Store navigation script -->
+    <script src="BackToStore.js"></script>
+  </body>
+</html>

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Beauty AR Mobile | AR-Webstore</title>
+  <!-- Emergency viewport fix for mobile devices -->
+  <script src="MobileViewportFix.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      touch-action: none;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #000;
+    }
+    
+    #app {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+    }
+    
+    #viewer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: black;
+    }
+    
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      z-index: 1000;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .control-button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      border: none;
+      outline: none;
+      touch-action: manipulation;
+    }
+    
+    .control-button svg {
+      width: 30px;
+      height: 30px;
+      fill: #333;
+    }
+    
+    #lookSelector {
+      position: fixed;
+      bottom: 90px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 10px;
+      z-index: 990;
+      scrollbar-width: none; /* Firefox */
+    }
+    
+    #lookSelector::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
+    }
+    
+    .look-item {
+      min-width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid transparent;
+      touch-action: manipulation;
+    }
+    
+    .look-item.active {
+      border-color: #ff4081;
+    }
+    
+    #topBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      z-index: 1000;
+      padding-top: env(safe-area-inset-top);
+    }
+    
+    .topbar-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      touch-action: manipulation;
+    }
+    
+    .topbar-button svg {
+      width: 24px;
+      height: 24px;
+      fill: #333;
+    }
+    
+    .topbar-title {
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    #categories {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      z-index: 995;
+      padding-bottom: env(safe-area-inset-bottom);
+      scrollbar-width: none;
+    }
+    
+    #categories::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .category {
+      padding: 0 15px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 14px;
+      opacity: 0.7;
+      touch-action: manipulation;
+    }
+    
+    .category.active {
+      opacity: 1;
+      border-bottom: 2px solid #ff4081;
+    }
+    
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      z-index: 2000;
+    }
+    
+    .loader {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #ff4081;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Fixes for different devices and orientations */
+    @media (orientation: landscape) {
+      #lookSelector {
+        bottom: 70px;
+        height: 80px;
+      }
+      
+      .look-item {
+        min-width: 60px;
+        height: 60px;
+      }
+      
+      .controls {
+        bottom: 10px;
+      }
+    }
+    
+    /* Fix for notched phones */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .controls {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      
+      #categories {
+        height: calc(50px + env(safe-area-inset-bottom));
+      }
+      
+      #topBar {
+        padding-top: env(safe-area-inset-top);
+        height: calc(60px + env(safe-area-inset-top));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="viewer"></div>
+    
+    <div id="topBar">
+      <button class="topbar-button" id="backButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+      </button>
+      <div class="topbar-title">Beauty AR</div>
+      <button class="topbar-button" id="settingsButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div id="lookSelector">
+      <!-- Look items will be added here dynamically -->
+    </div>
+    
+    <div id="categories">
+      <div class="category active">All</div>
+      <div class="category">Lipstick</div>
+      <div class="category">Eyeshadow</div>
+      <div class="category">Blush</div>
+      <div class="category">Foundation</div>
+      <div class="category">Full Looks</div>
+    </div>
+    
+    <div class="controls">
+      <button class="control-button" id="cameraButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M20 4h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 11.5V13H9v2.5L5.5 12 9 8.5V11h6V8.5l3.5 3.5-3.5 3.5z"/>
+        </svg>
+      </button>
+      <button class="control-button" id="captureButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+        </svg>
+      </button>
+      <button class="control-button" id="compareButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div id="loading">
+      <div class="loader"></div>
+      <p>Loading Beauty AR...</p>
+    </div>
+  </div>
+
+  <!-- Import Banuba SDK and our bridge -->
+  <script src="beauty-web/assets/BanubaSDK.js"></script>
+  <script src="BridgeToBeautyWeb.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sample data - in a real app this would come from your backend
+      const looks = [
+        { id: 'look1', name: 'Natural', thumbnail: 'beauty-web/assets/looks/thumbnails/natural.jpg' },
+        { id: 'look2', name: 'Glamour', thumbnail: 'beauty-web/assets/looks/thumbnails/glamour.jpg' },
+        { id: 'look3', name: 'Evening', thumbnail: 'beauty-web/assets/looks/thumbnails/evening.jpg' },
+        { id: 'look4', name: 'Bold', thumbnail: 'beauty-web/assets/looks/thumbnails/bold.jpg' },
+        { id: 'look5', name: 'Subtle', thumbnail: 'beauty-web/assets/looks/thumbnails/subtle.jpg' },
+        { id: 'look6', name: 'Dramatic', thumbnail: 'beauty-web/assets/looks/thumbnails/dramatic.jpg' }
+      ];
+      
+      // Populate look selector
+      const lookSelector = document.getElementById('lookSelector');
+      looks.forEach((look, index) => {
+        const lookItem = document.createElement('div');
+        lookItem.className = 'look-item' + (index === 0 ? ' active' : '');
+        lookItem.style.backgroundImage = `url(${look.thumbnail})`;
+        lookItem.setAttribute('data-id', look.id);
+        lookSelector.appendChild(lookItem);
+        
+        // Add click event
+        lookItem.addEventListener('click', function() {
+          // Remove active class from all items
+          document.querySelectorAll('.look-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          // Add active class to clicked item
+          this.classList.add('active');
+          
+          // Apply the look (placeholder)
+          console.log(`Applying look: ${look.name}`);
+          // In real app: applyLook(look.id);
+        });
+      });
+      
+      // Category switching
+      document.querySelectorAll('.category').forEach(category => {
+        category.addEventListener('click', function() {
+          // Remove active class from all categories
+          document.querySelectorAll('.category').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          // Add active class to clicked category
+          this.classList.add('active');
+          
+          // Filter looks based on category (placeholder)
+          console.log(`Switching to category: ${this.textContent}`);
+          // In real app: filterLooksByCategory(this.textContent);
+        });
+      });
+      
+      // Control buttons
+      document.getElementById('cameraButton').addEventListener('click', function() {
+        console.log('Switching camera');
+        // In real app: switchCamera();
+      });
+      
+      document.getElementById('captureButton').addEventListener('click', function() {
+        console.log('Capturing photo');
+        // In real app: capturePhoto();
+      });
+      
+      document.getElementById('compareButton').addEventListener('click', function() {
+        console.log('Toggle before/after comparison');
+        // In real app: toggleComparison();
+      });
+      
+      // Top bar buttons
+      document.getElementById('backButton').addEventListener('click', function() {
+        window.location.href = '/';
+      });
+      
+      document.getElementById('settingsButton').addEventListener('click', function() {
+        console.log('Opening settings');
+        // In real app: openSettings();
+      });
+      
+      // Initialize viewer (placeholder)
+      function initViewer() {
+        const viewer = document.getElementById('viewer');
+        
+        // Create placeholder canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        viewer.appendChild(canvas);
+        
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#333';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw placeholder camera view
+        ctx.fillStyle = '#666';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Camera Preview', canvas.width/2, canvas.height/2 - 20);
+        ctx.fillText('(In real app, this would be your camera feed)', canvas.width/2, canvas.height/2 + 20);
+        
+        // In a real app, this would be replaced with actual Banuba SDK initialization
+      }
+      
+      // Hide loading screen after delay
+      setTimeout(function() {
+        document.getElementById('loading').style.display = 'none';
+      }, 1500);
+      
+      // Initialize the viewer
+      initViewer();
+      
+      // Fix for viewport issues
+      function fixMobileLayout() {
+        // Force the app container to the correct dimensions
+        const app = document.getElementById('app');
+        app.style.width = '100vw';
+        app.style.height = '100vh';
+        
+        // Fix the viewer
+        const viewer = document.getElementById('viewer');
+        viewer.style.width = '100%';
+        viewer.style.height = '100%';
+        
+        // Add padding for notched phones
+        if (window.navigator.userAgent.includes('iPhone')) {
+          document.body.style.paddingTop = 'env(safe-area-inset-top)';
+          document.body.style.paddingBottom = 'env(safe-area-inset-bottom)';
+        }
+      }
+      
+      // Call layout fix initially and on resize
+      fixMobileLayout();
+      window.addEventListener('resize', fixMobileLayout);
+      window.addEventListener('orientationchange', function() {
+        setTimeout(fixMobileLayout, 100);
+      });
+    });
+  </script>
+</body>
+</html>
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border: none;
+      font-size: 24px;
+    }
+    
+    .menu-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border: none;
+      font-size: 24px;
+      z-index: 1000;
+    }
+    
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 15px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .beauty-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 300px;
+      background-color: white;
+      z-index: 2000;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    .beauty-menu.active {
+      transform: translateX(0);
+    }
+    
+    .menu-header {
+      padding: 20px;
+      background-color: #ff4081;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .menu-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+    }
+    
+    .menu-items {
+      padding: 10px 0;
+    }
+    
+    .menu-item {
+      padding: 15px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+    }
+    
+    .menu-item-icon {
+      margin-right: 15px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ff4081;
+      font-size: 18px;
+    }
+    
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #ff4081;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="webar"></div>
+  
+  <button class="back-button" onclick="window.location.href='../../index.html'">Back</button>
+  
+  <button class="menu-toggle" id="menuToggle">☰</button>
+  
+  <div class="controls">
+    <button class="control-button" id="cameraButton">📷</button>
+    <button class="control-button" id="switchButton">⟳</button>
+    <button class="control-button" id="photoButton">📸</button>
+  </div>
+  
+  <div class="beauty-menu" id="beautyMenu">
+    <div class="menu-header">
+      <span>Beauty Options</span>
+      <button class="menu-close" id="menuClose">×</button>
+    </div>
+    <div class="menu-items">
+      <div class="menu-item">
+        <div class="menu-item-icon">★</div>
+        <span>Looks</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">◫</div>
+        <span>Presets</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">◎</div>
+        <span>Retouch</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">◉</div>
+        <span>Makeup</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">◉</div>
+        <span>Eyes</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">◊</div>
+        <span>Lipstick</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">≈</div>
+        <span>Hair</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">▣</div>
+        <span>Background</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">⊞</div>
+        <span>LUTs</span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-icon">↻</div>
+        <span>Reset all</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Loading Beauty AR Experience...</p>
+  </div>
+
+  <!-- Banuba Client Token -->
+  <script>
+    window.BANUBA_CLIENT_TOKEN =
+      "Qk5CIB4Tnein3CnWcYtzk6lmUvtB6/n0jbEiBZLy4nkFTdXLD3fckEdJsy/D+de/HkaS2WJnnqQrEFtw9b+xde8ToV92HQuukysNu4enb0gvviZN4tMumQn+BcpZHpU+8qk9DMyLqdfckR/AmUopo3sHeOZCNy0UaaUcksgT+cpLoO9bdKWX/t8O8056r2rHG0kQt1LsuDq0rrvj8PPZu1nEUV4aAkvrzQbMx4+WNiaF9mE4nPXthgKmLlBG973zfuaqsnFoHJepOfymqhXqZwWTr4LgfJQb+81yjW9Xh1cncR0Syf1fUyGcLyYtdAqEiEsWHg8i440m0EMYRZH7sMXPxV/hnWdeAqliGn9mYZ2uIXg/UFFsTLH0CyEYtNXyT5wV7TfPvmnDAw+zS8joGeEqG8buq+5mEUgJ3cqtGctBUMzqqZ4fRkCaxSo8yl8yPpe4qzZ/COCyfUDFh7o1Ah5/CciF6BPLeaf/bL46t26UJwPvKifg9dBlRaFU4ZlUlaXpPQVj1Myaxacoz+dAXfjdekgeewqfwwWhTv6S1sf9tjkdZUOfEQNjrRjIkYwgaJ25AwS2EPrmPJ4ia5tXolI0ehQvT71HbKkSJCy2XDpUk/n/4z8cPI5afVr9hIf/1073sUyfDQNvbO1LUWiGEDw="
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+  <script type="module">
+    import {
+      Effect,
+      Webcam,
+      Image,
+      Player,
+      Module,
+      ImageCapture,
+      Dom,
+    } from "https://cdn.jsdelivr.net/npm/@banuba/webar@1.17.0/dist/BanubaSDK.browser.esm.min.js";
+    
+    // Menu toggle functionality
+    const menuToggle = document.getElementById('menuToggle');
+    const menuClose = document.getElementById('menuClose');
+    const beautyMenu = document.getElementById('beautyMenu');
+    
+    menuToggle.addEventListener('click', () => {
+      beautyMenu.classList.add('active');
+    });
+    
+    menuClose.addEventListener('click', () => {
+      beautyMenu.classList.remove('active');
+    });
+    
+    // Simplified Beauty AR implementation for mobile
+    let player, input;
+    
+    async function initBeautyAR() {
+      try {
+        // Initialize player
+        player = await Player.create({
+          devicePixelRatio: 1,
+          clientToken: window.BANUBA_CLIENT_TOKEN,
+        });
+        
+        // Load required modules
+        const modules = await Module.preload(
+          ["background", "eyes", "face_tracker", "hair", "lips", "skin"].map(
+            (m) => `https://cdn.jsdelivr.net/npm/@banuba/webar@1.17.0/dist/modules/${m}.zip`
+          )
+        );
+        
+        // Load effect
+        const effect = await Effect.preload("../beauty-web/assets/Makeup_new_morphs.zip");
+        
+        // Add modules and apply effect
+        await player.addModule(...modules);
+        await player.applyEffect(effect);
+        
+        // Start camera
+        input = new Webcam();
+        player.use(input);
+        
+        // Render to DOM
+        Dom.render(player, "#webar");
+        
+        // Hide loading screen
+        document.getElementById('loading').style.display = 'none';
+        
+        // Button functionality
+        document.getElementById('photoButton').addEventListener('click', async () => {
+          const capture = new ImageCapture(player);
+          const photo = await capture.takePhoto();
+          download(photo, "BeautyAR_Photo");
+        });
+        
+        document.getElementById('cameraButton').addEventListener('click', () => {
+          if (input instanceof Webcam) {
+            input.stop();
+            document.getElementById('cameraButton').textContent = '🎥';
+          } else {
+            input = new Webcam();
+            player.use(input);
+            player.play();
+            document.getElementById('cameraButton').textContent = '📷';
+          }
+        });
+        
+        // Handle visibility changes
+        document.addEventListener("visibilitychange", async () => {
+          const isActive = document.visibilityState === "visible";
+          
+          if (!isActive) {
+            input?.stop?.();
+          } else if (input instanceof Webcam) {
+            input = new Webcam();
+            player.use(input);
+            player.play();
+          }
+        });
+        
+        // Play
+        player.play();
+      } catch (error) {
+        console.error("Error initializing Beauty AR:", error);
+        document.getElementById('loading').innerHTML = `
+          <p>Error loading Beauty AR</p>
+          <p>${error.message}</p>
+          <button onclick="window.location.reload()" style="padding: 10px 20px; margin-top: 20px; background: #ff4081; color: white; border: none; border-radius: 5px;">Try Again</button>
+        `;
+      }
+    }
+    
+    // Initialize
+    initBeautyAR();
+    
+    // Helper functions
+    function download(blob, name) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+  </script>
+</body>
+</html>
