@@ -1,0 +1,65 @@
+.product-card {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+  background-color: #f9f9f9;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card img:hover {
+  transform: scale(1.05);
+}
+
+.product-card button {
+  transition: background-color 0.2s ease;
+}
+
+.product-card button:hover {
+  background-color: #d81b60 !important;
+}
+
+#ai-product-container {
+  transition: all 0.3s ease;
+}
+
+#ai-loading-indicator {
+  backdrop-filter: blur(3px);
+}
+
+/* Custom scrollbar for product container */
+#ai-product-cards::-webkit-scrollbar {
+  height: 6px;
+}
+
+#ai-product-cards::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+#ai-product-cards::-webkit-scrollbar-thumb {
+  background: #e91e63;
+  border-radius: 10px;
+}
+}
+}
+
+#ai-product-cards::-webkit-scrollbar-thumb:hover {
+  background: #d81b60;
+}
+
+/* Add to cart button animation */
+.product-card button {
+  transition: background-color 0.2s;
+}
+
+.product-card button:hover {
+  background-color: #d81b60 !important;
+}

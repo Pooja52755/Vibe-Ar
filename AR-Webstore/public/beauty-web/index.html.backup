@@ -17,20 +17,11 @@
     <script src="./assets/FixBeautyApp.js"></script>
     <!-- Gemini API configuration -->
     <script src="./assets/gemini-config.js"></script>
-    <!-- Image preloader for local images -->
-    <script src="./assets/ImagePreloader.js"></script>
-    <!-- Mock product data -->
-    <script src="./assets/MockProductData.js"></script>
-    <!-- Track manual filter selections and show matching products -->
+    <!-- Auto-apply makeup filters -->
     <script src="./assets/AutoApplyMakeup.js"></script>
-    <!-- Product recommendations based on manual filter selection -->
+    <!-- AI-powered filter suggestion and product recommendations -->
     <script src="./assets/AIFilterSuggestion.js"></script>
-    <!-- Image upload button -->
     <script src="./assets/AIUploadButton.js"></script>
-    <!-- Product image fallback handler -->
-    <script src="./assets/ProductImageFallback.js"></script>
-    <!-- Verification tool for product display behavior -->
-    <script src="./assets/ProductVerification.js"></script>
     <link rel="stylesheet" href="./assets/ai-products.css">
     <link rel="stylesheet" href="assets/buefy.min.css" />
     <style>
