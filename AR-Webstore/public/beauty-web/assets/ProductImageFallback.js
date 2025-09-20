@@ -4,8 +4,8 @@
 
 // This script will load local product images as a fallback
 document.addEventListener('DOMContentLoaded', function() {
-    // Define local product image fallbacks using actual product images
-    const LOCAL_PRODUCT_IMAGES = {
+    // Define local product image fallbacks for makeup products (AI Suggester - Banuba)
+    const MAKEUP_PRODUCT_IMAGES = {
         'lipstick': [
             './assets/products/lipstick/red.jpg',
             './assets/products/lipstick/pink.jpg',
@@ -48,6 +48,180 @@ document.addEventListener('DOMContentLoaded', function() {
             './assets/products/foundation/dewy-glow.jpg'
         ]
     };
+
+    // Define fashion product images for AI Search (Gen AI)
+    const FASHION_PRODUCT_IMAGES = {
+        'saree': [
+            './png images/myntra_-main/black-sequin-saree--party-nightout-bold.webp',
+            './png images/myntra_-main/pastel-pink-organza-saree--pastel-festive-chic.webp',
+            './png images/myntra_-main/yellow-cotton-saree--summer-casual-ethnic.webp'
+        ],
+        'dress': [
+            './png images/myntra_-main/Black Satin Slip Dress – party, night-out, chic.jpg',
+            './png images/myntra_-main/Floral Print Maxi Dress – vacation, aesthetic, flowy.jpeg',
+            './png images/myntra_-main/White Summer Sundress – summer, brunch, aesthetic.jpg',
+            './png images/myntra_-main/Velvet Mini Dress – party, luxe, chic.webp',
+            './png images/myntra_-main/navy-blue-blazer-dress--formal-office-interview.avif'
+        ],
+        'top': [
+            './png images/myntra_-main/crisp-white-blouse--formal-office-minimal.jpg',
+            './png images/myntra_-main/Cropped Sweatshirt – casual, sporty, cozy.webp',
+            './png images/myntra_-main/Neon Green Tank Top – party, gym, bold.webp',
+            './png images/myntra_-main/Pastel Blue Crop Top – pastel, summer, chic.webp',
+            './png images/myntra_-main/pastel-beige-peplum-top--formal-office-minimal.jpg',
+            './png images/myntra_-main/pastel-mint-peplum-top--pastel-chic-brunch.webp',
+            './png images/myntra_-main/sequin-tube-top--party-nightout-bold.jpg',
+            './png images/myntra_-main/tailored-grey-blazer-top--formal-office-professional.jpg'
+        ],
+        'kurti': [
+            './png images/myntra_-main/floral-printed-kurta-set--brunch-ethnic-casual.webp',
+            './png images/myntra_-main/Indo-Western Fusion Kurti – college, ethnic-modern, casual.webp',
+            './png images/myntra_-main/pastel-blue-kurta-set--ethnic-office-formal.webp',
+            './png images/myntra_-main/Pastel Green Anarkali – ethnic, festive, pastel.jpg'
+        ],
+        'pants': [
+            './png images/myntra_-main/beige-formal-trousers--interview-work-minimal.webp',
+            './png images/myntra_-main/Black Cargo Pants – streetwear, utility, edgy.jpg',
+            './png images/myntra_-main/black-highwaist-trousers--formal-office-interview.avif',
+            './png images/myntra_-main/black-palazzo-pants--ethnic-casual-comfy.webp',
+            './png images/myntra_-main/Grey Joggers – cozy, sporty, casual.jpg',
+            './png images/myntra_-main/modern-dhoti-pant-crop-top--fusion-festive-trendy.jpg',
+            './png images/myntra_-main/Pastel Pink Wide-leg Pants – pastel, aesthetic, chic.jpg'
+        ],
+        'jeans': [
+            './png images/myntra_-main/High-waist Ripped Jeans – streetwear, casual, college.jpg',
+            './png images/myntra_-main/Retro Flared Jeans – vintage, 90s, aesthetic.avif'
+        ],
+        'skirt': [
+            './png images/myntra_-main/Floral Midi Skirt – summer, aesthetic, brunch.jpg',
+            './png images/myntra_-main/grey-pencil-skirt--formal-office-chic.jpg',
+            './png images/myntra_-main/metallic-mini-skirt--party-edgy-trendy.webp',
+            './png images/myntra_-main/pastel-blue-pleated-skirt--pastel-aesthetic-chic.jpg'
+        ],
+        'jacket': [
+            './png images/myntra_-main/Denim Jacket – college, casual, timeless.jpeg',
+            './png images/myntra_-main/Leather Biker Jacket – edgy, party, streetwear.jpg',
+            './png images/myntra_-main/Oversized Blazer – formal, chic, streetwear mix.jpg',
+            './png images/myntra_-main/Pastel Lavender Puffer Jacket – winter, pastel, cozy.webp',
+            './png images/myntra_-main/Pastel Gradient Windbreaker – pastel, streetwear, rainy.webp',
+            './png images/myntra_-main/Sequin Jacket – party, night-out, bold.jpg',
+            './png images/myntra_-main/tailored-navy-pantsuit--formal-interview-professional.jpg'
+        ],
+        'sweater': [
+            './png images/myntra_-main/Beige Knit Sweater – cozy, autumn, minimal.jpg',
+            './png images/myntra_-main/black-turtleneck--winter-minimal-classy.jpg',
+            './png images/myntra_-main/Black Graphic Hoodie – streetwear, winter, rainy, cozy.webp',
+            './png images/myntra_-main/Oversized Blanket Hoodie – winter, cozy, indoor.jpg',
+            './png images/myntra_-main/Oversized Plaid Shirt – casual, cozy, college.jpg'
+        ],
+        'shoes': [
+            './png images/myntra_-main/Black Combat Boots – edgy, winter, rainy.webp',
+            './png images/myntra_-main/black-block-heels--office-formal-comfort.jpg',
+            './png images/myntra_-main/Chunky Dad Sneakers – streetwear, trendy, GenZ.jpg',
+            './png images/myntra_-main/ethnic-juttis--festive-ethnic-traditional.jpeg',
+            './png images/myntra_-main/Glittery Heels – party, night-out, chic.jpeg',
+            './png images/myntra_-main/Glow-in-the-dark Sneakers – party, rave, edgy.jpg',
+            './png images/myntra_-main/Pastel Yellow Slip-ons – pastel, summer, cute.webp',
+            './png images/myntra_-main/red-stilettos--party-bold-chic.webp',
+            './png images/myntra_-main/White Sneakers – all-season, casual, college.webp',
+            './png images/myntra_-main/white-platform-sneakers--streetwear-trendy-casual.webp'
+        ],
+        'accessories': [
+            './png images/myntra_-main/beaded-statement-earrings--festive-ethnic-bold.jpeg',
+            './png images/myntra_-main/Black Beanie – winter, streetwear, cozy.jpeg',
+            './png images/myntra_-main/Boho Fringe Bag – aesthetic, indie, casual.webp',
+            './png images/myntra_-main/Bucket Hat (Beige) – summer, aesthetic, casual.jpg',
+            './png images/myntra_-main/Chunky Hoop Earrings – party, bold, trendy.jpg',
+            './png images/myntra_-main/Cozy Wool Scarf – winter, cozy, minimal.jpeg',
+            './png images/myntra_-main/Ethnic Dupatta with Mirror Work – festive, traditional, chic.jpg',
+            './png images/myntra_-main/Mini Pastel Backpack – college, pastel, casual.jpg',
+            './png images/myntra_-main/Oversized Round Sunglasses – summer, vacation, GenZ.jpg',
+            './png images/myntra_-main/Oversized Tote Bag – chic, minimal, work.jpg',
+            './png images/myntra_-main/Pastel Scrunchie Pack – pastel, aesthetic, casual.jpg',
+            './png images/myntra_-main/Silver Layered Necklace – party, chic, Y2K.jpg',
+            './png images/myntra_-main/silver-clutch-bag--party-chic-nightout.jpg',
+            './png images/myntra_-main/Smartwatch – tech, sporty, GenZ.jpg',
+            './png images/myntra_-main/Straw Hat – beach, summer, vacation.webp',
+            './png images/myntra_-main/structured-tote-bag--office-formal-functional.jpg',
+            './png images/myntra_-main/Transparent Raincoat – rainy, monsoon, utility.webp',
+            './png images/myntra_-main/Transparent Sling Bag – party, trendy, Y2K.webp',
+            './png images/myntra_-main/Transparent Umbrella – rainy, monsoon, utility.webp',
+            './png images/myntra_-main/Waterproof Backpack – rainy, college, sporty.webp'
+        ],
+        'shirt': [
+            './png images/myntra_-main/crisp-white-blouse--formal-office-minimal.jpg',
+            './png images/myntra_-main/Oversized White T-shirt – casual, streetwear, college.webp',
+            './png images/myntra_-main/striped-oversized-shirt--college-casual-streetwear.webp',
+            './png images/myntra_-main/Tie-dye T-shirt – aesthetic, streetwear, GenZ.webp',
+            './png images/myntra_-main/white-button-down-shirt--formal-interview-minimal.webp'
+        ],
+        'ethnic': [
+            './png images/myntra_-main/black-sequin-saree--party-nightout-bold.webp',
+            './png images/myntra_-main/pastel-pink-organza-saree--pastel-festive-chic.webp',
+            './png images/myntra_-main/yellow-cotton-saree--summer-casual-ethnic.webp',
+            './png images/myntra_-main/floral-printed-kurta-set--brunch-ethnic-casual.webp',
+            './png images/myntra_-main/Indo-Western Fusion Kurti – college, ethnic-modern, casual.webp',
+            './png images/myntra_-main/pastel-blue-kurta-set--ethnic-office-formal.webp',
+            './png images/myntra_-main/Pastel Green Anarkali – ethnic, festive, pastel.jpg',
+            './png images/myntra_-main/denim-dungarees--college-casual-cute.jpeg',
+            './png images/myntra_-main/modern-dhoti-pant-crop-top--fusion-festive-trendy.jpg'
+        ],
+        'default': [
+            './png images/myntra_-main/black-sequin-saree--party-nightout-bold.webp',
+            './png images/myntra_-main/Black Satin Slip Dress – party, night-out, chic.jpg',
+            './png images/myntra_-main/crisp-white-blouse--formal-office-minimal.jpg',
+            './png images/myntra_-main/High-waist Ripped Jeans – streetwear, casual, college.jpg',
+            './png images/myntra_-main/White Sneakers – all-season, casual, college.webp'
+        ]
+    };
+
+    // Combined product images based on context (AI Search vs AI Suggester)
+    let LOCAL_PRODUCT_IMAGES = MAKEUP_PRODUCT_IMAGES;
+
+    // Function to detect if we're in AI Search context (Gen AI) or AI Suggester context (Banuba)
+    function detectProductContext() {
+        // Check for AI Search indicators
+        const isAISearch = document.querySelector('#ai-search') || 
+                          document.querySelector('.ai-search') ||
+                          document.querySelector('[data-context="ai-search"]') ||
+                          window.location.href.includes('ai-search') ||
+                          document.body.classList.contains('ai-search-mode');
+
+        // Check for AI Suggester indicators (Banuba makeup context)
+        const isAISuggester = document.querySelector('.bnb-makeup') || 
+                             document.querySelector('.bnb-features') ||
+                             document.querySelector('[data-context="ai-suggester"]') ||
+                             document.body.classList.contains('makeup-mode') ||
+                             window.location.href.includes('beauty');
+
+        // Check if product cards contain fashion items (sarees, dresses, etc.)
+        const productCards = document.querySelectorAll('.product-card');
+        let hasFashionProducts = false;
+        productCards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            if (text.includes('saree') || text.includes('dress') || text.includes('kurti') || 
+                text.includes('jeans') || text.includes('shirt') || text.includes('ethnic') ||
+                text.includes('trousers') || text.includes('skirt') || text.includes('jacket')) {
+                hasFashionProducts = true;
+            }
+        });
+
+        // Update LOCAL_PRODUCT_IMAGES based on context
+        if (hasFashionProducts || isAISearch) {
+            console.log('Detected AI Search context - using fashion product images');
+            LOCAL_PRODUCT_IMAGES = FASHION_PRODUCT_IMAGES;
+            return 'ai-search';
+        } else if (isAISuggester) {
+            console.log('Detected AI Suggester context - using makeup product images');
+            LOCAL_PRODUCT_IMAGES = MAKEUP_PRODUCT_IMAGES;
+            return 'ai-suggester';
+        } else {
+            // Default to makeup if unclear
+            console.log('Using default makeup product images');
+            LOCAL_PRODUCT_IMAGES = MAKEUP_PRODUCT_IMAGES;
+            return 'default';
+        }
+    }
 
     // Function to get currently selected makeup features from the AR app
     function getSelectedFeatures() {
@@ -208,14 +382,36 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const exists = await imageExists(originalSrc);
                 if (!exists) {
-                    // Determine product type and replace with fallback
+                    // Detect context first
+                    const context = detectProductContext();
+                    
+                    // Determine product type based on context
                     let productType = 'default';
-                    if (originalSrc.includes('mascara')) productType = 'mascara';
-                    else if (originalSrc.includes('lipstick')) productType = 'lipstick';
-                    else if (originalSrc.includes('eyeshadow')) productType = 'eyeshadow';
-                    else if (originalSrc.includes('blush')) productType = 'blush';
-                    else if (originalSrc.includes('foundation')) productType = 'foundation';
-                    else if (originalSrc.includes('eyeliner')) productType = 'eyeshadow';
+                    
+                    if (context === 'ai-search') {
+                        // Fashion product detection for AI Search
+                        if (originalSrc.includes('saree')) productType = 'saree';
+                        else if (originalSrc.includes('dress')) productType = 'dress';
+                        else if (originalSrc.includes('kurti') || originalSrc.includes('kurta')) productType = 'kurti';
+                        else if (originalSrc.includes('top') || originalSrc.includes('blouse')) productType = 'top';
+                        else if (originalSrc.includes('jeans')) productType = 'jeans';
+                        else if (originalSrc.includes('pants') || originalSrc.includes('trousers')) productType = 'pants';
+                        else if (originalSrc.includes('skirt')) productType = 'skirt';
+                        else if (originalSrc.includes('jacket') || originalSrc.includes('blazer')) productType = 'jacket';
+                        else if (originalSrc.includes('sweater') || originalSrc.includes('hoodie')) productType = 'sweater';
+                        else if (originalSrc.includes('shoes') || originalSrc.includes('sneaker') || originalSrc.includes('heel')) productType = 'shoes';
+                        else if (originalSrc.includes('shirt')) productType = 'shirt';
+                        else if (originalSrc.includes('ethnic') || originalSrc.includes('anarkali')) productType = 'ethnic';
+                        else if (originalSrc.includes('bag') || originalSrc.includes('accessory') || originalSrc.includes('jewelry')) productType = 'accessories';
+                    } else {
+                        // Makeup product detection for AI Suggester
+                        if (originalSrc.includes('mascara')) productType = 'mascara';
+                        else if (originalSrc.includes('lipstick')) productType = 'lipstick';
+                        else if (originalSrc.includes('eyeshadow')) productType = 'eyeshadow';
+                        else if (originalSrc.includes('blush')) productType = 'blush';
+                        else if (originalSrc.includes('foundation')) productType = 'foundation';
+                        else if (originalSrc.includes('eyeliner')) productType = 'eyeliner';
+                    }
                     
                     const selectedProductImages = getProductImagesForSelectedFeatures();
                     const fallbackImages = selectedProductImages[productType] || 
