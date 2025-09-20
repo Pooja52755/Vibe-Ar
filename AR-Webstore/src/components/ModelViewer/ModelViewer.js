@@ -42,7 +42,7 @@ const modelViewerStyles = `
     background-color: #4285f4;
   }
 
-  /* Ensure AR button is visible */
+  /* Ensure AR button is visible in v3.4.0 */
   model-viewer::part(ar-button) {
     display: block !important;
     visibility: visible !important;
@@ -100,7 +100,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
   const [ARSupported, setARSupported] = useState(false);
   const [annotate, setAnnotate] = useState(false);
   const [isInWishlist, setIsInWishlist] = useState(false);
-  const [modelLoaded, setModelLoaded] = useState(false);
+  
   
   let modelViewer1 = {
     backgroundColor: " #ecf0f3",
@@ -117,7 +117,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
   // Accessing varient selections element
   const varient = useRef(null);
 
-  console.log("Rendering model:", item.name, "Source:", item.modelSrc);
+  console.log(item)
 
   function toggle() {
     if (!document.fullscreenElement) {
@@ -150,76 +150,57 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
   useEffect(() => {
     // set up event listeners
     const modelViewer = model.current
-    if (!modelViewer) return;
-    
-    // Important: Monitor for load event to know when the model is ready
-    const onLoad = () => {
-      console.log('Model loaded:', item.name);
-      setModelLoaded(true);
-      
+    modelViewer &&
+    modelViewer.addEventListener('load', () => {
+      console.log('loaded')
       const availableVariants = modelViewer?.availableVariants;
-      console.log('Available variants:', availableVariants);
-      
-      if (varient.current && availableVariants) {
-        // Clear existing options
-        while (varient.current.firstChild) {
-          varient.current.removeChild(varient.current.firstChild);
-        }
-        
-        // Add new options
-        for (const variant of availableVariants) {
-          const option = document.createElement('option');
-          option.value = variant;
-          option.textContent = variant;
-          varient.current.appendChild(option);
-        }
+      console.log(availableVariants)
+      for (const variant of availableVariants) {
+        const option = document.createElement('option');
+        option.value = variant;
+        option.textContent = variant;
+        varient?.current?.appendChild(option);
+      }
 
-        // Adding a default option
-        const defaultOption = document.createElement('option');
-        defaultOption.value = 'Default';
-        defaultOption.textContent = 'Default';
-        varient.current.appendChild(defaultOption);
-      }
-    };
-    
-    // Important: Also monitor for error events
-    const onError = (error) => {
-      console.error('Error loading model:', item.name, error);
-    };
-    
-    modelViewer.addEventListener('load', onLoad);
-    modelViewer.addEventListener('error', onError);
-    
-    if (varient.current) {
-      varient.current.addEventListener('input', (event) => {
-        modelViewer.variantName = event.target.value === 'Default' ? null : event.target.value;
-      });
-    }
-    
-    return () => {
-      // Clean up event listeners
-      modelViewer.removeEventListener('load', onLoad);
-      modelViewer.removeEventListener('error', onError);
-      if (varient.current) {
-        varient.current.removeEventListener('input', () => {});
-      }
-    };
-  }, [item.name]);
+      // Adding a default option
+      const defaultOption = document.createElement('option');
+      defaultOption.value = 'Default';
+      defaultOption.textContent = 'Default';
+      varient?.current?.appendChild(defaultOption);
+    });
+
+    varient?.current?.addEventListener('input', (event) => {
+      modelViewer.variantName = event.target.value === 'Default' ? null : event.target.value;
+    });
+  }, []);
    
   useEffect(() => {
     if(wishlist){
-      const isInWishlist = wishlist.some((wishlistItem) => wishlistItem.id === item.id);
-      setIsInWishlist(isInWishlist);
+    const isInWishlist = wishlist.some((wishlistItem) => wishlistItem.id === item.id);
+    setIsInWishlist(isInWishlist);
     }
   }, [item, wishlist]);
 
   useEffect(() => {
     // Add custom event listener to handle AR activation
     if (model.current) {
-      // For model-viewer version 3.0.2
-      model.current.addEventListener('ar-status', (event) => {
-        if (event.detail.status === 'failed') {
-          console.warn('AR activation failed:', event.detail.error);
+      // For model-viewer version 3.4.0
+      model.current.addEventListener('activate-ar', () => {
+        try {
+          // Get the activateAR method from the model-viewer element
+          if (model.current.activateAR) {
+            model.current.activateAR();
+          } else {
+            // Fallback to clicking the AR button directly
+            const arButton = model.current.shadowRoot.querySelector('button.ar-button');
+            if (arButton) {
+              arButton.click();
+            } else {
+              console.warn('AR button not found in model-viewer shadow DOM');
+            }
+          }
+        } catch (error) {
+          console.error('Error activating AR:', error);
         }
       });
     }
@@ -227,7 +208,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
     return () => {
       // Clean up event listener
       if (model.current) {
-        model.current.removeEventListener('ar-status', () => {});
+        model.current.removeEventListener('activate-ar', () => {});
       }
     };
   }, [model]);
@@ -252,7 +233,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
         style={modelViewer1}
         src={item.modelSrc}
         ios-src={item.iOSSrc}
-        alt={`3D model of ${item.name}`}
+        alt="A 3D model"
         ar
         ar-modes="webxr scene-viewer quick-look"
         ar-scale="auto"
@@ -273,10 +254,9 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
         min-field-of-view="30deg"
         min-camera-orbit="auto auto auto"
         max-camera-orbit="auto auto auto"
-        camera-target="0m 0m 0m"
         ar-button-visible
       >
-        {/* Custom AR button for easier access */}
+        {/* Custom AR button specific for model-viewer v3.4.0 */}
         <div style={{
           position: "absolute",
           bottom: "16px",
@@ -286,11 +266,12 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
         }}>
           <button 
             onClick={() => {
-              if (model.current) {
-                // For 3.0.2, just use the activateAR if available
-                if (model.current.activateAR) {
-                  model.current.activateAR();
-                }
+              if (model.current && model.current.activateAR) {
+                model.current.activateAR();
+              } else {
+                // Dispatch a custom event for our event handler
+                const event = new CustomEvent('activate-ar', { bubbles: true });
+                model.current.dispatchEvent(event);
               }
             }}
             className="ar-overlay-button"
@@ -361,10 +342,9 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
             zIndex: 100
           }}
           onClick={() => {
-            // For 3.0.2, directly call activateAR if available
-            if (model.current && model.current.activateAR) {
-              model.current.activateAR();
-            }
+            // Try to activate AR through a custom event
+            const event = new CustomEvent('activate-ar', { bubbles: true });
+            model.current.dispatchEvent(event);
           }}
           >
             <span style={{ marginRight: "8px" }}>🏠</span> View in your space
@@ -396,7 +376,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
           i
         </button>
 
-        {annotate && item.annotations && item.annotations.map((annotate, idx) => (
+        {annotate && item.annotations.map((annotate, idx) => (
           <button
             key={idx}
             class="Hotspot"

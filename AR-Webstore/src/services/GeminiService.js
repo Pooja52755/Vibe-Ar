@@ -1,6 +1,106 @@
 // GeminiService.js
 // This file contains the functions to interact with Google's Gemini API
 
+// Gemini API key (already defined in environment)
+const GEMINI_API_KEY = "AIzaSyAilrrFYiO9jT62gzfkLfKeubSsiJ7rq4g";
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+
+/**
+ * Analyze a face image using Gemini AI and get makeup recommendations
+ * @param {string} imageBase64 - Base64 encoded image data
+ * @param {string} prompt - User's makeup prompt
+ * @returns {Object} Analysis results with makeup recommendations
+ */
+export async function geminiAnalyzeFace(imageBase64, prompt) {
+  try {
+    console.log("[GeminiService] Analyzing face with prompt:", prompt);
+    
+    // Prepare request body with the image and prompt
+    const requestBody = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `Analyze this face image and recommend makeup to apply based on the following prompt: "${prompt}". 
+              Please output a JSON object with a makeupFilters array that includes detailed instructions for applying 
+              specific makeup elements. Each item in makeupFilters should have: 
+              type (lipstick, eyeshadow, eyeliner, blush, foundation, highlighter, contour), 
+              color (in named colors like "pink", "red", etc.), 
+              intensity (a number between 0 and 1), 
+              and style (for applicable types like eyeshadow or eyeliner). 
+              Only include filters that are appropriate for the prompt.`
+            },
+            {
+              inlineData: {
+                mimeType: "image/jpeg",
+                data: imageBase64.replace(/^data:image\/jpeg;base64,/, "")
+              }
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        topK: 32,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      }
+    };
+    
+    // Make API request
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("[GeminiService] API error:", errorData);
+      throw new Error(`Gemini API error: ${errorData.error?.message || "Unknown error"}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract JSON from response
+    if (!data.candidates || !data.candidates[0].content.parts[0].text) {
+      throw new Error("Invalid response format from Gemini API");
+    }
+    
+    // Extract JSON object from text response
+    const responseText = data.candidates[0].content.parts[0].text;
+    const jsonMatch = responseText.match(/({[\s\S]*})/);
+    
+    if (!jsonMatch) {
+      throw new Error("Could not extract JSON from Gemini response");
+    }
+    
+    // Parse the JSON
+    const makeup = JSON.parse(jsonMatch[0]);
+    
+    // Ensure expected format
+    if (!makeup.makeupFilters || !Array.isArray(makeup.makeupFilters)) {
+      throw new Error("Response missing makeup filters array");
+    }
+    
+    console.log("[GeminiService] Successfully analyzed face:", makeup);
+    return makeup;
+    
+  } catch (error) {
+    console.error("[GeminiService] Error analyzing face:", error);
+    return {
+      makeupFilters: [
+        // Fallback filters if analysis fails
+        { type: "lipstick", color: "pink", intensity: 0.7 },
+        { type: "eyeshadow", color: "brown", intensity: 0.6, style: "natural" },
+        { type: "blush", color: "pink", intensity: 0.5 }
+      ]
+    };
+  }
+}
+
 // Sample product data for the Gemini AI to search from
 const PRODUCT_DATA = [
   {
@@ -639,6 +739,268 @@ class GeminiService {
       }, 1500); // Simulate API delay
     });
   }
+}
+
+/**
+ * Get makeup suggestions based on text prompt
+ * @param {string} prompt - Text description of desired makeup look
+ * @returns {Object} Makeup suggestions with filters
+ */
+export async function getMakeupSuggestions(prompt) {
+  try {
+    console.log("[GeminiService] Getting makeup suggestions for prompt:", prompt);
+    
+    // Prepare request body with the prompt
+    const requestBody = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `Generate makeup filter recommendations based on this description: "${prompt}".
+              Please output a JSON object with a makeupFilters array that includes detailed instructions for applying 
+              specific makeup elements. Each item in makeupFilters should have: 
+              type (lipstick, eyeshadow, eyeliner, blush, foundation, highlighter, contour), 
+              color (as both a named color like "pink" AND a hex color code), 
+              intensity (a number between 0 and 1), 
+              and style (for applicable types like eyeshadow or eyeliner).
+              For color, provide descriptive shade names that would be used in makeup products.
+              Only include filters that are appropriate for the prompt.`
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        topK: 32,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      }
+    };
+    
+    // Make API request
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("[GeminiService] API error:", errorData);
+      throw new Error(`Gemini API error: ${errorData.error?.message || "Unknown error"}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract JSON from response
+    if (!data.candidates || !data.candidates[0].content.parts[0].text) {
+      throw new Error("Invalid response format from Gemini API");
+    }
+    
+    // Extract JSON object from text response
+    const responseText = data.candidates[0].content.parts[0].text;
+    const jsonMatch = responseText.match(/({[\s\S]*})/);
+    
+    if (!jsonMatch) {
+      throw new Error("Could not extract JSON from Gemini response");
+    }
+    
+    // Parse the JSON
+    const makeup = JSON.parse(jsonMatch[0]);
+    
+    // Ensure expected format
+    if (!makeup.makeupFilters || !Array.isArray(makeup.makeupFilters)) {
+      throw new Error("Response missing makeup filters array");
+    }
+    
+    console.log("[GeminiService] Successfully generated makeup suggestions:", makeup);
+    return makeup;
+    
+  } catch (error) {
+    console.error("[GeminiService] Error generating makeup suggestions:", error);
+    // Return fallback filters based on the prompt
+    const fallbackFilters = generateFallbackFilters(prompt);
+    return {
+      makeupFilters: fallbackFilters
+    };
+  }
+}
+
+/**
+ * Generate fallback makeup filters based on prompt keywords
+ * @param {string} prompt - The makeup prompt
+ * @returns {Array} Array of makeup filters
+ */
+function generateFallbackFilters(prompt) {
+  const promptLower = prompt.toLowerCase();
+  const filters = [];
+  
+  // Basic lipstick - almost always included
+  let lipstickColor = "#FF6B6B"; // default pink-red
+  let lipstickIntensity = 0.7;
+  
+  if (promptLower.includes("red lip") || promptLower.includes("bold lip")) {
+    lipstickColor = "#D40000";
+    lipstickIntensity = 0.9;
+  } else if (promptLower.includes("pink lip") || promptLower.includes("rose lip")) {
+    lipstickColor = "#FF80AB";
+    lipstickIntensity = 0.7;
+  } else if (promptLower.includes("nude lip") || promptLower.includes("neutral lip") || promptLower.includes("natural lip")) {
+    lipstickColor = "#C17566";
+    lipstickIntensity = 0.6;
+  } else if (promptLower.includes("coral lip")) {
+    lipstickColor = "#FF8A65";
+    lipstickIntensity = 0.8;
+  } else if (promptLower.includes("berry") || promptLower.includes("burgundy")) {
+    lipstickColor = "#AD1457";
+    lipstickIntensity = 0.8;
+  }
+  
+  filters.push({
+    type: "lipstick",
+    color: lipstickColor,
+    intensity: lipstickIntensity,
+    shade: detectLipstickShade(lipstickColor)
+  });
+  
+  // Eyeshadow
+  if (!promptLower.includes("no eye") && !promptLower.includes("without eye")) {
+    let eyeshadowColor = "#CB9A6A"; // default neutral brown
+    let eyeshadowIntensity = 0.6;
+    
+    if (promptLower.includes("smoky eye") || promptLower.includes("smokey eye") || promptLower.includes("dramatic eye")) {
+      eyeshadowColor = "#4E4E4E";
+      eyeshadowIntensity = 0.85;
+    } else if (promptLower.includes("natural eye") || promptLower.includes("neutral eye")) {
+      eyeshadowColor = "#D2B48C";
+      eyeshadowIntensity = 0.5;
+    } else if (promptLower.includes("gold eye") || promptLower.includes("bronze eye")) {
+      eyeshadowColor = "#D4AF37";
+      eyeshadowIntensity = 0.7;
+    } else if (promptLower.includes("pink eye") || promptLower.includes("rose eye")) {
+      eyeshadowColor = "#E8B4B8";
+      eyeshadowIntensity = 0.6;
+    } else if (promptLower.includes("blue eye")) {
+      eyeshadowColor = "#6A84C3";
+      eyeshadowIntensity = 0.7;
+    } else if (promptLower.includes("purple eye")) {
+      eyeshadowColor = "#8B5FBF";
+      eyeshadowIntensity = 0.7;
+    }
+    
+    filters.push({
+      type: "eyeshadow",
+      color: eyeshadowColor,
+      intensity: eyeshadowIntensity,
+      style: promptLower.includes("smoky") || promptLower.includes("smokey") ? "smoky" : "natural",
+      shade: detectEyeshadowShade(eyeshadowColor)
+    });
+  }
+  
+  // Blush
+  if (!promptLower.includes("no blush") && !promptLower.includes("without blush")) {
+    let blushColor = "#F08080"; // default light coral
+    let blushIntensity = 0.5;
+    
+    if (promptLower.includes("rosy cheek") || promptLower.includes("pink cheek") || promptLower.includes("pink blush")) {
+      blushColor = "#FF80AB";
+      blushIntensity = 0.6;
+    } else if (promptLower.includes("peach") || promptLower.includes("coral cheek") || promptLower.includes("coral blush")) {
+      blushColor = "#FFAB91";
+      blushIntensity = 0.5;
+    } else if (promptLower.includes("bronze") || promptLower.includes("sun kissed")) {
+      blushColor = "#CD853F";
+      blushIntensity = 0.5;
+    } else if (promptLower.includes("natural") || promptLower.includes("subtle")) {
+      blushColor = "#EDBCB0";
+      blushIntensity = 0.4;
+    }
+    
+    filters.push({
+      type: "blush",
+      color: blushColor,
+      intensity: blushIntensity,
+      shade: detectBlushShade(blushColor)
+    });
+  }
+  
+  // Eyeliner for dramatic looks
+  if (promptLower.includes("cat eye") || promptLower.includes("winged") || 
+      promptLower.includes("dramatic") || promptLower.includes("eyeliner") ||
+      promptLower.includes("evening") || promptLower.includes("bold")) {
+    
+    let eyelinerColor = "#000000"; // default black
+    
+    if (promptLower.includes("brown eyeliner")) {
+      eyelinerColor = "#5D4037";
+    } else if (promptLower.includes("blue eyeliner")) {
+      eyelinerColor = "#1A237E";
+    } else if (promptLower.includes("colored eyeliner")) {
+      eyelinerColor = "#6A1B9A";
+    }
+    
+    filters.push({
+      type: "eyeliner",
+      color: eyelinerColor,
+      intensity: 0.8,
+      style: promptLower.includes("cat eye") || promptLower.includes("winged") ? "winged" : "classic",
+      shade: eyelinerColor === "#000000" ? "Black" : eyelinerColor === "#5D4037" ? "Brown" : "Colored"
+    });
+  }
+  
+  return filters;
+}
+
+/**
+ * Detect lipstick shade name based on hex color
+ */
+function detectLipstickShade(hexColor) {
+  // Simplified color mapping
+  const colorMap = {
+    "#D40000": "Classic Red",
+    "#FF80AB": "Pink Petal",
+    "#C17566": "Nude Beige",
+    "#FF8A65": "Coral Sunset",
+    "#AD1457": "Berry Wine"
+  };
+  
+  return colorMap[hexColor] || "Custom Shade";
+}
+
+/**
+ * Detect eyeshadow shade name based on hex color
+ */
+function detectEyeshadowShade(hexColor) {
+  // Simplified color mapping
+  const colorMap = {
+    "#4E4E4E": "Smoky Charcoal",
+    "#D2B48C": "Neutral Taupe",
+    "#D4AF37": "Golden Shimmer",
+    "#E8B4B8": "Rose Quartz",
+    "#6A84C3": "Blue Twilight",
+    "#8B5FBF": "Purple Haze",
+    "#CB9A6A": "Bronze Shimmer"
+  };
+  
+  return colorMap[hexColor] || "Custom Shade";
+}
+
+/**
+ * Detect blush shade name based on hex color
+ */
+function detectBlushShade(hexColor) {
+  // Simplified color mapping
+  const colorMap = {
+    "#FF80AB": "Rosy Glow",
+    "#FFAB91": "Peach Nectar",
+    "#CD853F": "Sun Kissed Bronze",
+    "#EDBCB0": "Natural Flush",
+    "#F08080": "Coral Bliss"
+  };
+  
+  return colorMap[hexColor] || "Custom Shade";
 }
 
 // Export the service

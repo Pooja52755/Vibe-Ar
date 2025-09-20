@@ -1,0 +1,97 @@
+/**
+ * selected-features-fix.css - Improves styling of the selected features panel
+ */
+
+/* Make sure selected features panel is visible */
+.selected-features,
+[data-role="selected-features"],
+.selected-filters {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  margin-bottom: 15px !important;
+  z-index: 100 !important;
+}
+
+/* Feature category headings */
+.selected-features h1,
+.selected-features h2,
+.selected-features h3,
+.selected-features h4,
+.selected-filters h1,
+.selected-filters h2,
+.selected-filters h3,
+.selected-filters h4,
+[data-role="selected-features"] h1,
+[data-role="selected-features"] h2,
+[data-role="selected-features"] h3,
+[data-role="selected-features"] h4 {
+  color: #485FC7 !important;
+  font-weight: bold !important;
+  margin-bottom: 5px !important;
+  margin-top: 10px !important;
+}
+
+/* First heading has no top margin */
+.selected-features h1:first-child,
+.selected-features h2:first-child,
+.selected-features h3:first-child,
+.selected-features h4:first-child,
+.selected-filters h1:first-child,
+.selected-filters h2:first-child,
+.selected-filters h3:first-child,
+.selected-filters h4:first-child,
+[data-role="selected-features"] h1:first-child,
+[data-role="selected-features"] h2:first-child,
+[data-role="selected-features"] h3:first-child,
+[data-role="selected-features"] h4:first-child {
+  margin-top: 0 !important;
+}
+
+/* Filter tags */
+.filter,
+.feature,
+.selected-item,
+.tag,
+[data-role="filter"],
+[data-filter] {
+  display: inline-flex !important;
+  align-items: center !important;
+  background-color: #f0f0f0 !important;
+  border-radius: 16px !important;
+  padding: 4px 10px !important;
+  margin-right: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 12px !important;
+}
+
+/* Back button styling */
+.back-button,
+[aria-label="Back"],
+[data-role="back"],
+#enhanced-back-button {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: #485FC7 !important;
+  color: white !important;
+  padding: 8px 16px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  margin-right: 10px !important;
+}
+
+/* Hide test and mock buttons */
+#test-verification-button,
+#show-mock-products-button,
+[id*="mock"],
+[id*="test"],
+[id*="verify"] {
+  display: none !important;
+}

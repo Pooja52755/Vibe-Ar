@@ -1,0 +1,77 @@
+/**
+ * GenAI button styles
+ * Ensures the GenAI makeup button is highly visible
+ */
+
+#genai-makeup-button-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 10000;
+  transition: all 0.3s ease;
+}
+
+#genai-makeup-button {
+  background: linear-gradient(135deg, #8e44ad, #3498db);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  animation: genai-button-pulse 2s infinite;
+  white-space: nowrap;
+}
+
+#genai-makeup-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #9b59b6, #2980b9);
+}
+
+#genai-makeup-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#genai-makeup-button:before {
+  content: '✨';
+  font-size: 18px;
+}
+
+/* Pulsing animation */
+@keyframes genai-button-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Mobile-friendly positioning */
+@media (max-width: 768px) {
+  #genai-makeup-button-container {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  #genai-makeup-button {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+}

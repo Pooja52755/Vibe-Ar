@@ -38,6 +38,9 @@
     <script src="BanubaClientToken.js"></script>
     <script src="BackToStore.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+    <!-- Initialize GenAI Makeup with better UI -->
+    <script src="./assets/AIPromptStyles.css.js"></script>
+    <script src="./assets/InitGenAIMakeup.js"></script>
     <script type="module">
       import {
         Effect,
@@ -51,6 +54,9 @@
       import { zipSync as zip } from "https://cdn.jsdelivr.net/npm/fflate@0.6.4/esm/browser.min.js";
       import App from "./src/app.js";
       import Store from "./src/store.js";
+      // Import GenAI Makeup features
+      import GenAIMakeup from "./src/features/GenAIMakeup.js";
+      import EnhancedProductRecommendations from "./src/features/EnhancedProductRecommendations.js";
 
       App.$children[0].toggleLoading();
 

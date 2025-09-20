@@ -15,23 +15,48 @@
     <!-- Load our mobile fixes CSS and script -->
     <link rel="stylesheet" href="./assets/mobile-fixes.css">
     <script src="./assets/FixBeautyApp.js"></script>
-    <!-- Gemini API configuration -->
-    <script src="./assets/gemini-config.js"></script>
+    <!-- Scroll helper for better scrolling experience -->
+    <link rel="stylesheet" href="./assets/ScrollHelper.css">
+    <link rel="stylesheet" href="./assets/selected-features-fix.css">
+    <script src="./assets/ScrollHelper.js"></script>
     <!-- Image preloader for local images -->
     <script src="./assets/ImagePreloader.js"></script>
     <!-- Mock product data -->
     <script src="./assets/MockProductData.js"></script>
-    <!-- Track manual filter selections and show matching products -->
-    <script src="./assets/AutoApplyMakeup.js"></script>
-    <!-- Product recommendations based on manual filter selection -->
-    <script src="./assets/AIFilterSuggestion.js"></script>
-    <!-- Image upload button -->
-    <script src="./assets/AIUploadButton.js"></script>
+    <!-- Product data for makeup products -->
+    <script src="./assets/ProductData.js"></script>
     <!-- Product image fallback handler -->
     <script src="./assets/ProductImageFallback.js"></script>
-    <!-- Verification tool for product display behavior -->
-    <script src="./assets/ProductVerification.js"></script>
-    <link rel="stylesheet" href="./assets/ai-products.css">
+    <!-- Product showcase integration -->
+    <script src="./assets/ProductShowcaseIntegration.js"></script>
+    <!-- Improved product display and filtering -->
+    <script src="./assets/ImprovedFilterMatching.js"></script>
+    <!-- Back button fix -->
+    <script src="./assets/BackButtonFix.js"></script>
+    <!-- Gemini API Configuration and Service -->
+    <script src="./assets/gemini-config.js"></script>
+    <script src="./assets/GeminiService.js"></script>
+    <!-- Initialization Coordinator for proper component loading (MUST be loaded before other components) -->
+    <script src="./assets/InitializationCoordinator.js"></script>
+    <!-- AI Makeup Backend Handler -->
+    <script src="./assets/MakeupGeminiHandler.js"></script>
+    <!-- AI Filter Suggestion for makeup recommendations -->
+    <script src="./assets/AIFilterSuggestion.js"></script>
+    <!-- Makeup filter enforcer to ensure filters are applied properly -->
+    <script src="./assets/makeup-filter-enforcer.js"></script>
+    <!-- Makeup component enforcer to ensure all makeup elements (lipstick, eyebrows, etc.) are applied -->
+    <script src="./assets/makeup-component-enforcer.js"></script>
+    <!-- Direct controls for individual makeup components -->
+    <script src="./assets/makeup-component-controls.js"></script>
+    <!-- Makeup filter event dispatcher -->
+    <script src="./assets/MakeupFilterEventDispatcher.js"></script>
+    <!-- Filter matched product recommendations -->
+    <script src="./assets/FilterMatchedProductRecommendations.js"></script>
+    <!-- Product recommendations debugger -->
+    <script src="./assets/ProductRecommendationsDebugger.js"></script>
+    <!-- Remove all GenAI components as requested -->
+    <link rel="stylesheet" href="./assets/component-controls.css">
+    <link rel="stylesheet" href="./assets/product-recommendations.css">
     <link rel="stylesheet" href="assets/buefy.min.css" />
     <style>
       /* Fix for back button and selected features */
@@ -89,6 +114,7 @@
           width: 100vw !important;
           max-width: 100vw !important;
           overflow-x: hidden !important;
+          overflow-y: auto !important;
           background-color: #f0f4ff !important;
         }
         
@@ -187,6 +213,7 @@
           width: 100vw !important;
           max-width: 100vw !important;
           overflow-x: hidden !important;
+          overflow-y: auto !important;
         }
         
         /* Fix for file upload buttons */
@@ -211,7 +238,8 @@
       html,
       body,
       #webar {
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         width: 100%;
         height: 100%;
         margin: 0;
@@ -582,5 +610,13 @@
     </script>
     <!-- Back to Store navigation script -->
     <script src="BackToStore.js"></script>
+    
+    <!-- Product image and look mapping scripts -->
+    <script src="./assets/LookAppliedMonitor.js"></script>
+    <script src="./assets/MakeupLookProductMapping.js"></script>
+    <script src="./assets/ProductImagePathResolver.js"></script>
+    
+    <!-- App initialization script (must be last) -->
+    <script src="./assets/AppInitializer.js"></script>
   </body>
 </html>

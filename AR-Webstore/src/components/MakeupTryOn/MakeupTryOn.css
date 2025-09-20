@@ -1,0 +1,148 @@
+/* MakeupTryOn.css */
+.makeup-try-on-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.makeup-try-on-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+}
+
+.makeup-try-on-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.makeup-try-on-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.control-button {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #e0e0e0;
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.makeup-try-on-content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.makeup-camera-container {
+  flex: 1;
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.makeup-ai-sidebar {
+  width: 300px;
+  padding: 16px;
+  background-color: white;
+  border-left: 1px solid #eee;
+  overflow-y: auto;
+}
+
+.makeup-tutorial-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.makeup-tutorial-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.makeup-tutorial-content h3 {
+  margin-top: 0;
+  color: #e91e63;
+}
+
+.makeup-tutorial-content ul {
+  margin: 16px 0;
+  padding-left: 20px;
+}
+
+.makeup-tutorial-content li {
+  margin-bottom: 8px;
+}
+
+.tutorial-close-button {
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: block;
+  margin: 20px auto 0;
+}
+
+.tutorial-close-button:hover {
+  background-color: #c2185b;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .makeup-try-on-content {
+    flex-direction: column;
+  }
+  
+  .makeup-camera-container {
+    min-height: 300px;
+  }
+  
+  .makeup-ai-sidebar {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #eee;
+  }
+  
+  .control-button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}

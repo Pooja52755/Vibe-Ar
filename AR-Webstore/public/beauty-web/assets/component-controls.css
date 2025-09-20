@@ -1,0 +1,53 @@
+/**
+ * Component control panel styles
+ */
+#makeup-component-panel {
+  font-family: Arial, sans-serif;
+}
+
+#makeup-component-panel input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #d3d3d3;
+  outline: none;
+}
+
+#makeup-component-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #6200ee;
+  cursor: pointer;
+}
+
+#makeup-component-panel input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #6200ee;
+  cursor: pointer;
+  border: none;
+}
+
+#makeup-component-panel button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  #makeup-component-panel {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+    transform: none;
+    max-width: 250px;
+  }
+  
+  #makeup-component-panel.expanded {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}

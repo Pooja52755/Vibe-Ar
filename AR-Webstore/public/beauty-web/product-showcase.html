@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makeup Product Showcase</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .product-category {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-cards {
+            display: grid;
+            gap: 15px;
+        }
+
+        .product-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            background: #e9ecef;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+
+        .product-details {
+            color: #666;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            color: #e91e63;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .category-colors {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Category-specific colors */
+        .lipstick-colors .color-dot:nth-child(1) { background: #dc2626; }
+        .lipstick-colors .color-dot:nth-child(2) { background: #ec4899; }
+        .lipstick-colors .color-dot:nth-child(3) { background: #f97316; }
+        .lipstick-colors .color-dot:nth-child(4) { background: #7c2d12; }
+
+        .eyeshadow-colors .color-dot:nth-child(1) { background: #374151; }
+        .eyeshadow-colors .color-dot:nth-child(2) { background: #f59e0b; }
+        .eyeshadow-colors .color-dot:nth-child(3) { background: #1f2937; }
+
+        .blush-colors .color-dot:nth-child(1) { background: #f97316; }
+        .blush-colors .color-dot:nth-child(2) { background: #ec4899; }
+
+        .foundation-colors .color-dot:nth-child(1) { background: #f3e8ff; }
+        .foundation-colors .color-dot:nth-child(2) { background: #fef3c7; }
+        .foundation-colors .color-dot:nth-child(3) { background: #fde68a; }
+
+        .mascara-colors .color-dot:nth-child(1) { background: #1f2937; }
+        .mascara-colors .color-dot:nth-child(2) { background: #374151; }
+        .mascara-colors .color-dot:nth-child(3) { background: #6b7280; }
+
+        .eyeliner-colors .color-dot:nth-child(1) { background: #000000; }
+        .eyeliner-colors .color-dot:nth-child(2) { background: #1e40af; }
+
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .product-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .product-image {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Makeup Collection</h1>
+            <p>Discover our premium beauty products with AR try-on technology</p>
+        </div>
+
+        <div class="product-grid">
+            <!-- Lipstick Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">💋 Lipsticks</h2>
+                    <p class="category-subtitle">Bold & Beautiful Colors</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/lipstick/red.jpg" alt="Classic Red" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Classic Red Lipstick</div>
+                            <div class="product-details">Matte finish • Long-lasting • BeautyGlow</div>
+                            <div class="product-price">$18.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/lipstick/pink.jpg" alt="Pink Perfection" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Pink Perfection</div>
+                            <div class="product-details">Cream finish • Moisturizing • GlamourGirl</div>
+                            <div class="product-price">$16.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/lipstick/coral.jpg" alt="Nude Elegance" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Nude Elegance</div>
+                            <div class="product-details">Satin finish • Everyday wear • NaturalBeauty</div>
+                            <div class="product-price">$15.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/lipstick/berry.jpg" alt="Berry Blast" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Berry Blast</div>
+                            <div class="product-details">Matte finish • Rich berry • BeautyGlow</div>
+                            <div class="product-price">$19.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors lipstick-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+
+            <!-- Eyeshadow Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">👁️ Eyeshadows</h2>
+                    <p class="category-subtitle">Dramatic & Elegant Looks</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/eyeshadow/smoky.jpg" alt="Smoky Drama" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Smoky Drama</div>
+                            <div class="product-details">Powder • Blendable • SummerGlow</div>
+                            <div class="product-price">$24.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/eyeshadow/sunset.jpg" alt="Sunset Glow" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Sunset Glow</div>
+                            <div class="product-details">Shimmer • Warm tones • GoldenHour</div>
+                            <div class="product-price">$22.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors eyeshadow-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+
+            <!-- Blush Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">🌸 Blush</h2>
+                    <p class="category-subtitle">Natural Radiant Glow</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/blush/coral.png" alt="Coral Charm" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Coral Charm</div>
+                            <div class="product-details">Powder • Buildable • SummerGlow</div>
+                            <div class="product-price">$19.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/blush/rosy.png" alt="Rosy Cheeks" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Rosy Cheeks</div>
+                            <div class="product-details">Cream • Natural flush • PureGlow</div>
+                            <div class="product-price">$17.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors blush-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+
+            <!-- Foundation Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">✨ Foundation</h2>
+                    <p class="category-subtitle">Flawless Base Makeup</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/foundation/dewy-glow.jpg" alt="Dewy Glow" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Dewy Glow Foundation</div>
+                            <div class="product-details">Liquid • Hydrating • GlowUp</div>
+                            <div class="product-price">$32.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/foundation/matte-velvet.jpg" alt="Matte Velvet" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Matte Velvet</div>
+                            <div class="product-details">Liquid • Long-wearing • VelvetTouch</div>
+                            <div class="product-price">$29.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/foundation/bb-cream.jpg" alt="BB Cream" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">BB Cream Natural</div>
+                            <div class="product-details">Tinted moisturizer • SPF 30 • NaturalBeauty</div>
+                            <div class="product-price">$24.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors foundation-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+
+            <!-- Mascara Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">👁️‍🗨️ Mascara</h2>
+                    <p class="category-subtitle">Volume & Length</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/mascara/length.jpg" alt="Length Master" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Length Master</div>
+                            <div class="product-details">Lengthening • Fiber technology • VolumePro</div>
+                            <div class="product-price">$18.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/mascara/curl.jpg" alt="Curl Power" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Curl Power</div>
+                            <div class="product-details">Curling • Waterproof • SummerGlow</div>
+                            <div class="product-price">$17.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/mascara/natural.jpg" alt="Natural Definition" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Natural Definition</div>
+                            <div class="product-details">Brown • Defining • NaturalBeauty</div>
+                            <div class="product-price">$15.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors mascara-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+
+            <!-- Eyeliner Category -->
+            <div class="product-category">
+                <div class="category-header">
+                    <h2 class="category-title">✏️ Eyeliner</h2>
+                    <p class="category-subtitle">Precision & Definition</p>
+                </div>
+                <div class="product-cards">
+                    <div class="product-card">
+                        <img src="./assets/products/eyeliner/liquid-black.png" alt="Liquid Black" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Liquid Black Liner</div>
+                            <div class="product-details">Liquid • Precise tip • BeautyGlow</div>
+                            <div class="product-price">$14.99</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <img src="./assets/products/eyeliner/gel-blue.png" alt="Gel Blue" class="product-image">
+                        <div class="product-info">
+                            <div class="product-name">Gel Blue Liner</div>
+                            <div class="product-details">Gel formula • Smudge-proof • ColorPop</div>
+                            <div class="product-price">$16.99</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-colors eyeliner-colors">
+                    <div class="color-dot"></div>
+                    <div class="color-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the ProductImageFallback script -->
+    <script src="./assets/ProductImageFallback.js"></script>
+    
+    <script>
+        // Add click handlers for product cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const productCards = document.querySelectorAll('.product-card');
+            
+            productCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const productName = card.querySelector('.product-name').textContent;
+                    const productPrice = card.querySelector('.product-price').textContent;
+                    
+                    // Add a simple animation feedback
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.transform = 'scale(1)';
+                    }, 150);
+                    
+                    // Here you could integrate with the AR system
+                    console.log(`Selected product: ${productName} - ${productPrice}`);
+                    
+                    // You could trigger AR try-on here
+                    // window.parent.postMessage({action: 'tryProduct', product: productName}, '*');
+                });
+            });
+        });
+
+        // Listen for messages from parent window about selected features
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'updateProducts') {
+                const selectedFeatures = event.data.selectedFeatures || [];
+                console.log('Received selected features:', selectedFeatures);
+                updateVisibleProducts(selectedFeatures);
+            }
+        });
+
+        // Function to show/hide product categories based on selected features
+        function updateVisibleProducts(selectedFeatures) {
+            const allCategories = document.querySelectorAll('.product-category');
+            
+            if (selectedFeatures.length === 0) {
+                // Show all categories if no features selected
+                allCategories.forEach(category => {
+                    category.style.display = 'block';
+                });
+                return;
+            }
+            
+            // Hide all categories first
+            allCategories.forEach(category => {
+                category.style.display = 'none';
+            });
+            
+            // Show only selected categories
+            selectedFeatures.forEach(feature => {
+                let selector = '';
+                switch(feature) {
+                    case 'lipstick':
+                        selector = '.product-category:has(.category-title:contains("Lipsticks"))';
+                        break;
+                    case 'eyeshadow':
+                        selector = '.product-category:has(.category-title:contains("Eyeshadows"))';
+                        break;
+                    case 'blush':
+                        selector = '.product-category:has(.category-title:contains("Blush"))';
+                        break;
+                    case 'foundation':
+                        selector = '.product-category:has(.category-title:contains("Foundation"))';
+                        break;
+                    case 'mascara':
+                        selector = '.product-category:has(.category-title:contains("Mascara"))';
+                        break;
+                    case 'eyeliner':
+                        selector = '.product-category:has(.category-title:contains("Eyeliner"))';
+                        break;
+                }
+                
+                // Fallback method using text content
+                allCategories.forEach(category => {
+                    const title = category.querySelector('.category-title');
+                    if (title) {
+                        const titleText = title.textContent.toLowerCase();
+                        if ((feature === 'lipstick' && titleText.includes('lipstick')) ||
+                            (feature === 'eyeshadow' && titleText.includes('eyeshadow')) ||
+                            (feature === 'blush' && titleText.includes('blush')) ||
+                            (feature === 'foundation' && titleText.includes('foundation')) ||
+                            (feature === 'mascara' && titleText.includes('mascara')) ||
+                            (feature === 'eyeliner' && titleText.includes('eyeliner'))) {
+                            category.style.display = 'block';
+                        }
+                    }
+                });
+            });
+            
+            // Update the header to reflect filtered view
+            const header = document.querySelector('.header h1');
+            if (header) {
+                const featureNames = selectedFeatures.map(f => f.charAt(0).toUpperCase() + f.slice(1)).join(' & ');
+                header.textContent = `✨ ${featureNames} Collection`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/**
+ * looks-to-products-mapping.json - Maps Banuba makeup looks to product images
+ */
+{
+  "Aster": {
+    "lipstick": "pink",
+    "eyeshadow": "berry",
+    "blush": "coral"
+  },
+  "Bluebell": {
+    "lipstick": "berry",
+    "eyeshadow": "berry",
+    "eyeliner": "black"
+  },
+  "Coral": {
+    "lipstick": "coral",
+    "blush": "coral",
+    "eyeshadow": "sunset"
+  },
+  "Dolly": {
+    "lipstick": "pink",
+    "eyeshadow": "gold",
+    "blush": "coral"
+  },
+  "Jasmine": {
+    "lipstick": "nude",
+    "eyeshadow": "neutral",
+    "foundation": "natural"
+  },
+  "Queen": {
+    "lipstick": "red",
+    "eyeshadow": "smoky",
+    "eyeliner": "black"
+  },
+  "Smoky": {
+    "eyeshadow": "smoky",
+    "eyeliner": "black",
+    "mascara": "black"
+  },
+  "Twilight": {
+    "lipstick": "berry",
+    "eyeshadow": "berry",
+    "blush": "coral"
+  },
+  "40s": {
+    "lipstick": "red",
+    "eyeshadow": "neutral",
+    "eyeliner": "black"
+  },
+  "Confetti": {
+    "eyeshadow": "sunset",
+    "lipstick": "pink"
+  }
+}

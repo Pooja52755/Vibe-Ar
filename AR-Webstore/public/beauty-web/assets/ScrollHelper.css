@@ -1,0 +1,109 @@
+/**
+ * ScrollHelper.css - Enhances scrolling capabilities across the application
+ */
+
+/* Override any overflow hidden properties */
+html, body, #webar, .bnb-layout, .bnb-layout__content, .bnb-layout__side {
+  overflow-y: auto !important;
+}
+
+/* Make sure panels and sidebars can scroll */
+.sidebar, .sidebar-panel, .panel, .bnb-layout__side, .bnb-settings, .bnb-features {
+  max-height: 100vh;
+  overflow-y: auto !important;
+}
+
+/* Add scrollbar styling for better visibility */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Add scroll indicators at top and bottom of scrollable areas */
+.bnb-layout__side::before,
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), transparent);
+  z-index: 100;
+  pointer-events: none;
+}
+
+.bnb-layout__side::after,
+.panel::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Add a floating scroll indicator button */
+.scroll-indicator {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+}
+
+.scroll-indicator::before {
+  content: '↓';
+  font-size: 20px;
+}
+
+.scroll-indicator.scroll-up::before {
+  content: '↑';
+}
+
+/* Fix for mobile layout */
+@media (max-width: 768px) {
+  .bnb-layout {
+    height: auto !important;
+    min-height: 100vh !important;
+    position: relative !important;
+  }
+  
+  .bnb-layout__content {
+    min-height: 50vh !important;
+  }
+  
+  .bnb-layout__side {
+    max-height: 50vh !important;
+  }
+}

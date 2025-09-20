@@ -1,0 +1,211 @@
+/**
+ * genai-upload-buttons.css
+ * Styles for the GenAI and Upload buttons
+ */
+
+/* Toast messages */
+.toast-message {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 24px;
+    z-index: 10001;
+    font-size: 16px;
+    animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+    pointer-events: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translate(-50%, 0); }
+    to { opacity: 0; transform: translate(-50%, -20px); }
+}
+
+/* Button animations */
+@keyframes buttonPulse {
+    0% { transform: scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    50% { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
+    100% { transform: scale(1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Processing spinner */
+.processing-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* Integrated buttons container */
+#integrated-buttons-container {
+    animation: slideIn 0.5s ease-out;
+}
+
+#integrated-buttons-container button {
+    animation: buttonPulse 3s infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+#take-photo-button {
+    --delay: 0s;
+}
+
+#upload-photo-button {
+    --delay: 0.5s;
+}
+
+#genai-makeup-button {
+    --delay: 1s;
+}
+
+/* Camera UI */
+#camera-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10002;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#camera-preview {
+    max-width: 90%;
+    max-height: 70%;
+    border: 3px solid white;
+    border-radius: 8px;
+}
+
+#capture-button {
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#close-camera-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* GenAI prompt dialog */
+#genai-prompt-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10002;
+}
+
+#genai-prompt-dialog {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+#genai-prompt-dialog h2 {
+    margin: 0 0 16px 0;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+#genai-prompt-dialog p {
+    margin: 0 0 16px 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.prompt-chip {
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 16px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.prompt-chip:hover {
+    background-color: #e0e0e0;
+}
+
+#genai-prompt-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    min-height: 100px;
+    resize: none;
+    box-sizing: border-box;
+}
+
+/* Fix for mobile devices */
+@media (max-width: 768px) {
+    #integrated-buttons-container {
+        bottom: 20px;
+        right: 10px;
+    }
+    
+    #integrated-buttons-container button {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 160px;
+    }
+}

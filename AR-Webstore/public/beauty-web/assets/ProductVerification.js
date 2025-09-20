@@ -3,6 +3,33 @@
  * when manual filters are applied
  */
 
+// Flag to control automatic product display
+let autoLoadProducts = false;
+
+/**
+ * Check if any filters are applied in the application
+ */
+function hasActiveFilters() {
+    // Check if any makeup filters are active in various ways
+    
+    // Method 1: Check for filter UI indicators
+    const activeFilterElements = document.querySelectorAll('.active-filter, .filter-active, .selected-filter');
+    if (activeFilterElements.length > 0) {
+        return true;
+    }
+    
+    // Method 2: Check global state if available
+    if (window.appliedFilters) {
+        const hasFilters = Object.values(window.appliedFilters).some(filter => filter !== null);
+        if (hasFilters) {
+            return true;
+        }
+    }
+    
+    // No active filters found
+    return false;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add a test button to verify behavior
     const testButton = document.createElement('button');
@@ -253,39 +280,44 @@ function showMockProductCards() {
     // Mock product data
     const mockProducts = [
         { 
-            name: "Rosy Blush Lipstick", 
+            name: "Classic Red Lipstick", 
             type: "Lipstick", 
-            color: "#FF5C7A", 
-            image: "https://m.media-amazon.com/images/I/61zekvd0aEL._SL1500_.jpg", 
+            category: "lipstick",
+            color: "#CC0000", 
+            image: window.location.pathname.includes('/beauty-web/') ? 'assets/looks/Queen.jpg' : '/beauty-web/assets/looks/Queen.jpg', 
             price: "$18.99" 
         },
         { 
-            name: "Rose Gold Shimmer", 
+            name: "Smoky Night Palette", 
             type: "Eyeshadow", 
-            color: "#E0BFB8", 
-            image: "https://m.media-amazon.com/images/I/71bIZdXVPQL._SL1500_.jpg", 
-            price: "$29.99" 
+            category: "eyeshadow",
+            color: "#333333", 
+            image: window.location.pathname.includes('/beauty-web/') ? 'assets/looks/Smoky.jpg' : '/beauty-web/assets/looks/Smoky.jpg', 
+            price: "$32.99" 
         },
         { 
-            name: "Rose Petal Blush", 
+            name: "Rosy Glow Blush", 
             type: "Blush", 
+            category: "blush",
             color: "#FF92A5", 
-            image: "https://m.media-amazon.com/images/I/71X9HkmIsoL._SL1500_.jpg", 
-            price: "$22.99" 
+            image: window.location.pathname.includes('/beauty-web/') ? 'assets/looks/Coral.jpg' : '/beauty-web/assets/looks/Coral.jpg', 
+            price: "$18.99" 
         },
         { 
-            name: "Coral Sunset Lipstick", 
-            type: "Lipstick", 
-            color: "#FF7F50", 
-            image: "https://m.media-amazon.com/images/I/51DI76nj6mL._SL1200_.jpg", 
-            price: "$19.99" 
+            name: "Perfect Precision Eyeliner", 
+            type: "Eyeliner", 
+            category: "eyeliner",
+            color: "#000000", 
+            image: window.location.pathname.includes('/beauty-web/') ? 'assets/looks/Smoky.jpg' : '/beauty-web/assets/looks/Smoky.jpg', 
+            price: "$15.99" 
         },
         { 
-            name: "Golden Hour Shadow", 
-            type: "Eyeshadow", 
-            color: "#FFDC73", 
-            image: "https://m.media-amazon.com/images/I/81yFDnAU+XL._SL1500_.jpg", 
-            price: "$28.99" 
+            name: "Volume Boost Mascara", 
+            type: "Mascara", 
+            category: "mascara",
+            color: "#000000", 
+            image: window.location.pathname.includes('/beauty-web/') ? 'assets/looks/Smoky.jpg' : '/beauty-web/assets/looks/Smoky.jpg', 
+            price: "$16.99" 
         }
     ];
     
@@ -307,7 +339,11 @@ function showMockProductCards() {
         
         card.innerHTML = `
             <div style="width: 100px; height: 100px; background-color: #f5f5f5; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
-                <img src="${product.image}" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="${product.name}" onerror="this.onerror=null; this.src='../png images/pink.jpg';">
+                <img src="${product.image}" style="max-width: 100%; max-height: 100%; object-fit: contain;" 
+                     alt="${product.name}" 
+                     data-category="${product.category || ''}"
+                     data-color="${product.color || ''}"
+                     onerror="this.onerror=null; this.style.display='none'; this.parentElement.style.backgroundColor='${product.color || '#f5f5f5'}'; this.parentElement.innerHTML+='<span style=\\'color: white; font-size: 12px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);\\'>${product.name.split(' ')[0]}</span>';">
             </div>
             <div style="font-weight: bold; margin-bottom: 2px;">${product.name}</div>
             <div style="color: #888; font-size: 12px; margin-bottom: 5px;">${product.type}</div>

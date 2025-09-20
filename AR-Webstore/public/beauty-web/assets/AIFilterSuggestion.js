@@ -11,7 +11,7 @@
 class AIFilterSuggestion {
   constructor() {
     // Get the Gemini API key from the config file
-    this.geminiApiKey = window.GEMINI_API_KEY || "YOUR_GEMINI_API_KEY"; // Replace with your actual key
+    this.geminiApiKey = window.GEMINI_API_KEY || "AIzaSyDIZLGgaxV8kKTjWA9SASstL6gRkseKGkM"; // Using user's provided key
     this.isAnalyzing = false;
     
     // Use mock product data if available, otherwise use default data
@@ -118,7 +118,7 @@ class AIFilterSuggestion {
       `;
       
       // Check if we have a valid API key
-      if (this.geminiApiKey && this.geminiApiKey !== "YOUR_GEMINI_API_KEY") {
+      if (this.geminiApiKey && this.geminiApiKey !== "AIzaSyDIZLGgaxV8kKTjWA9SASstL6gRkseKGkM") {
         try {
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${this.geminiApiKey}`, {
             method: 'POST',
