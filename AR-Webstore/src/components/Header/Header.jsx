@@ -7,7 +7,7 @@ import "./styles.css";
 const Header = () => {
   const navigationLinks = [
     { label: "Home", Path: "/home" },
-    { label: "Magic Items", Path: "/" },
+    { label: "Magic Items", Path: "/magic-items" },
     { label: "Hunt", Path: "/ai-search" },
     { label: "Beauty Lab", Path: "/ai-suggester" }
   ];
