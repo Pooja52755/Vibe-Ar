@@ -1,0 +1,50 @@
+🎨 MAKEUP IMAGE UPLOAD INSTRUCTIONS
+========================================
+
+📍 WHERE TO PLACE YOUR IMAGE:
+
+RECOMMENDED LOCATION:
+📁 d:\ARGEN4\AURAFIT\AR-Webstore\public\beauty-web\assets\
+   └── your-makeup-image.jpg  ← PLACE YOUR IMAGE HERE
+
+🔧 HOW TO UPDATE THE CODE:
+
+1. Save your makeup image in the assets folder above
+2. Rename it to something simple like: makeup-result.jpg
+3. Open: ai-makeup-auto-apply.js 
+4. Find the function: createMakeupImageDataURL()
+5. Change this line:
+   return './assets/applied-makeup-demo.png';
+   TO:
+   return './assets/makeup-result.jpg';
+
+💡 ALTERNATIVE LOCATIONS:
+
+Location 1: beauty-web assets (RECOMMENDED)
+📁 d:\ARGEN4\AURAFIT\AR-Webstore\public\beauty-web\assets\makeup.jpg
+Code: return './assets/makeup.jpg';
+
+Location 2: beauty-web root
+📁 d:\ARGEN4\AURAFIT\AR-Webstore\public\beauty-web\makeup.jpg  
+Code: return './makeup.jpg';
+
+Location 3: main public assets
+📁 d:\ARGEN4\AURAFIT\AR-Webstore\public\assets\makeup.jpg
+Code: return '../assets/makeup.jpg';
+
+✅ SUPPORTED IMAGE FORMATS:
+- .jpg
+- .jpeg  
+- .png
+- .webp
+
+🧪 TESTING:
+1. Upload your image
+2. Update the path in createMakeupImageDataURL()
+3. Open Beauty Web and click "Apply Auto Style"
+4. Your image should appear in the canvas!
+
+📝 CURRENT PATH TO CHANGE:
+File: d:\ARGEN4\AURAFIT\AR-Webstore\public\beauty-web\assets\ai-makeup-auto-apply.js
+Function: createMakeupImageDataURL()
+Line: return './assets/applied-makeup-demo.png'; ← CHANGE THIS

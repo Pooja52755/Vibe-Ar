@@ -1005,22 +1005,6 @@ class GeminiService {
     }
 
     try {
-      const prompt = `
-        I'm searching for products with the following description: "${query}"
-        
-        Here are the available products:
-        ${JSON.stringify(ALL_PRODUCTS, null, 2)}
-        
-        Please analyze the query and find the most relevant products. Consider the following:
-        1. If the query mentions a specific aesthetic, vibe, or occasion, find products that match that theme.
-        2. If the query mentions colors, styles, or product types, prioritize those.
-        3. If the query is abstract (like "outfits for rainy day"), use common sense to select appropriate items.
-        
-        Return a JSON object with:
-        1. "products": An array of the most relevant products (up to 5)
-        2. "explanation": A brief explanation of why these products match the query
-      `;
-
       // In a real implementation, this would be an actual API call to Gemini
       // For demo purposes, we'll simulate a response
       const response = await this.simulateGeminiResponse(query);
@@ -1338,6 +1322,76 @@ class GeminiService {
 }
 
 /**
+ * Generate makeup style based on text prompt
+ * @param {string} prompt - Text description of desired makeup look
+ * @returns {Object} Makeup style with filters
+ */
+export async function generateMakeupStyle(prompt) {
+  try {
+    console.log("[GeminiService] Generating makeup style for prompt:", prompt);
+    
+    // Prepare request body with the prompt
+    const requestBody = {
+      contents: [
+        {
+          parts: [
+            {
+              text: prompt
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.3,
+        topK: 32,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      }
+    };
+    
+    // Make API request
+    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("[GeminiService] API error:", errorData);
+      throw new Error(`Gemini API error: ${errorData.error?.message || "Unknown error"}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract JSON from response
+    if (!data.candidates || !data.candidates[0].content.parts[0].text) {
+      throw new Error("Invalid response format from Gemini API");
+    }
+    
+    // Extract JSON object from text response
+    const responseText = data.candidates[0].content.parts[0].text;
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    
+    if (!jsonMatch) {
+      throw new Error("Could not extract JSON from Gemini response");
+    }
+    
+    // Parse the JSON
+    const makeupStyle = JSON.parse(jsonMatch[0]);
+    
+    console.log("[GeminiService] Successfully generated makeup style:", makeupStyle);
+    return makeupStyle;
+    
+  } catch (error) {
+    console.error("[GeminiService] Error generating makeup style:", error);
+    throw error;
+  }
+}
+
+/**
  * Get makeup suggestions based on text prompt
  * @param {string} prompt - Text description of desired makeup look
  * @returns {Object} Makeup suggestions with filters
@@ -1600,4 +1654,6 @@ function detectBlushShade(hexColor) {
 }
 
 // Export the service
-export default new GeminiService();
+const geminiService = new GeminiService();
+geminiService.generateMakeupStyle = generateMakeupStyle;
+export default geminiService;

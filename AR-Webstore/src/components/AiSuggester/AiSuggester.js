@@ -1,22 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import DeviceDetector from '../ui/DeviceDetector';
 import './AiSuggester.css';
 
 const AiSuggester = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  
-  // Detect if user is on mobile (fallback detection for components that need direct access)
-  useEffect(() => {
-    const checkMobile = () => {
-      const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      setIsMobile(mobile);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
   
   // Open universal beauty experience that redirects to local version
   const openUniversalExperience = () => {
