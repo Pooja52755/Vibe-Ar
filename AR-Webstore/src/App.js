@@ -14,10 +14,19 @@ import WishList from "./components/Wishlist/WishList";
 import AISearch from "./components/AISearch/AISearch";
 import AiSuggester from "./components/AiSuggester/AiSuggester";
 import StyleVibeLanding from "./components/StyleVibeLanding/StyleVibeLanding";
-import { useState } from "react";
+import LoadingScreen from "./LoadingScreen";
+import { useState, useEffect } from "react";
 
 const App = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 4000); // Show loading screen for 4 seconds
+    return () => clearTimeout(timer);
+  }, []);
 
   const addToWishlist = (item) => {
     setWishlist([...wishlist, item]);
@@ -26,6 +35,9 @@ const App = () => {
     const updatedWishlist = wishlist.filter((item) => item.id !== id);
     setWishlist(updatedWishlist);
   };
+  if (loading) {
+    return <LoadingScreen />;
+  }
   return (
     <>
       <BrowserRouter>

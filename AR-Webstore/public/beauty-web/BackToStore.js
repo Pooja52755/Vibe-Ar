@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Create the back button
     const backButton = document.createElement('button');
     backButton.textContent = isMobile ? 'Back' : 'Back to Store';
-    backButton.style.padding = isMobile ? '6px 10px' : '10px 15px';
-    backButton.style.backgroundColor = '#ff4081';
+    backButton.style.padding = isMobile ? '8px 14px' : '12px 20px';
+    backButton.style.backgroundColor = '#ff3e6c';
     backButton.style.color = 'white';
     backButton.style.border = 'none';
-    backButton.style.borderRadius = '30px';
+    backButton.style.borderRadius = '10px'; // Soft corners
     backButton.style.cursor = 'pointer';
     backButton.style.fontWeight = 'bold';
     backButton.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-    backButton.style.fontSize = isMobile ? '12px' : '16px';
+    backButton.style.fontSize = isMobile ? '13px' : '17px';
     backButton.style.display = 'flex';
     backButton.style.alignItems = 'center';
     backButton.style.justifyContent = 'center';
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.backgroundColor = '#e91e63';
     };
     backButton.onmouseout = function() {
-        this.style.backgroundColor = '#ff4081';
+        this.style.backgroundColor = '#ff3e6c';
     };
     
     // Add click event to return to AR-Webstore
@@ -49,6 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add the button to the container
     backButtonContainer.appendChild(backButton);
     
-    // Add the container to the document body
-    document.body.appendChild(backButtonContainer);
+    // Remove anything under the button (container only contains button now)
+    // Add the container to the dashboard instead of document.body
+    const dashboard = document.getElementById('dashboard');
+    if (dashboard) {
+        dashboard.appendChild(backButtonContainer);
+    }
 });

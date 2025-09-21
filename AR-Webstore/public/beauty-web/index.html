@@ -63,7 +63,7 @@
     <style>
       /* Fix for back button and selected features */
       .back-button {
-        background-color: #485FC7 !important;
+        background-color: #ff3e6c !important;
         color: white !important;
         border-radius: 4px !important;
         font-weight: bold !important;
@@ -79,9 +79,9 @@
       
       /* Fix active feature styling */
       .panel-block.is-active {
-        background-color: #F0F4FF !important;
-        border-left: 3px solid #485FC7 !important;
-        color: #485FC7 !important;
+        background-color: #ffeef3 !important;
+        border-left: 3px solid #ff3e6c !important;
+        color: #ff3e6c !important;
         font-weight: bold !important;
       }
       
@@ -104,8 +104,71 @@
       }
       
       #selected-features-panel .panel-heading {
-        background-color: #485FC7 !important;
+        background-color: #ff3e6c !important;
         color: white !important;
+      }
+
+      /* Update any other blue UI elements for feature menu */
+      .panel-block .icon,
+      .panel-block span,
+      .panel-block .icon.is-right {
+        color: #ff3e6c !important;
+      }
+
+      /* Additional overrides for blue to pink */
+      .navbar-item.title,
+      .navbar-item,
+      .navbar-menu,
+      .navbar-burger,
+      .menu-button {
+        color: #ff3e6c !important;
+        background-color: #ffeef3 !important;
+      }
+      .navbar {
+        background-color: #ffeef3 !important;
+      }
+
+      /* Fix mobile layout for panels */
+      @media (max-width: 768px) {
+        .bnb-layout__panel, 
+        .bnb-layout__side, 
+        .panel {
+          width: 100% !important;
+          max-width: 100vw !important;
+          overflow-x: hidden !important;
+          box-sizing: border-box !important;
+        }
+      }
+      
+      /* Selected features panel styling */
+      #selected-features-panel {
+        margin-top: 20px !important;
+        border-radius: 4px !important;
+      }
+      
+      #selected-features-panel .panel-heading {
+        background-color: #ff3e6c !important;
+        color: white !important;
+      }
+
+      /* Update any other blue UI elements for feature menu */
+      .panel-block .icon,
+      .panel-block span,
+      .panel-block .icon.is-right {
+        color: #ff3e6c !important;
+      }
+
+      /* Sidebar menu icons and text to pink */
+      .sidebar .menu-item .menu-icon {
+        background: #ff3e6c !important;
+        color: white !important;
+      }
+      .sidebar .menu-item span {
+        color: #ff3e6c !important;
+        font-weight: 600 !important;
+      }
+      .sidebar .menu-arrow {
+        color: #ff3e6c !important;
       }
     </style>
     <!-- Additional Android-specific fixes -->
@@ -154,7 +217,7 @@
         
         /* Style the header */
         .navbar {
-          background-color: #fff !important;
+          background-color: #ffeef3 !important;
           box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
           height: 60px !important;
         }
@@ -166,13 +229,13 @@
         
         /* Style the header title */
         .navbar-item.title {
-          color: #4a6aed !important;
+          color: #ff3e6c !important;
           font-weight: 600 !important;
         }
         
         /* Style the back button */
         .navbar-item.back-button, .navbar-burger {
-          background-color: #ff4081 !important;
+          background-color: #ff3e6c !important;
           color: white !important;
           border-radius: 20px !important;
           margin: 10px !important;
@@ -183,13 +246,13 @@
         
         /* Style the menu button */
         .navbar-burger, .menu-button {
-          background-color: #4a6aed !important;
+          background-color: #ff3e6c !important;
           border-radius: 20px !important;
         }
         
         /* Style feature icons */
         .panel-block .icon {
-          color: #4a6aed !important;
+          color: #ff3e6c !important;
           margin-right: 15px !important;
           width: 24px !important;
           height: 24px !important;
@@ -197,7 +260,7 @@
         
         /* Style feature text */
         .panel-block span {
-          color: #4a6aed !important;
+          color: #ff3e6c !important;
           font-weight: 500 !important;
         }
         
@@ -307,9 +370,33 @@
         }
       }
     </style>
+    <style>
+/* Force pink for sidebar menu icons, text, and arrows (highest specificity) */
+.sidebar .menu-item .menu-icon {
+  background: #ff3e6c !important;
+  color: white !important;
+}
+.sidebar .menu-item span {
+  color: #ff3e6c !important;
+  font-weight: 600 !important;
+}
+.sidebar .menu-arrow {
+  color: #ff3e6c !important;
+}
+</style>
   </head>
 
   <body class="mobile-optimized">
+    <div style="width:100%;display:flex;align-items:center;justify-content:flex-start;padding:16px 0 0 16px;">
+      <button id="back-to-store-btn" style="background-color:#ff3e6c;color:white;border:none;border-radius:10px;padding:12px 20px;font-weight:bold;box-shadow:0 2px 5px rgba(0,0,0,0.2);font-size:17px;cursor:pointer;display:flex;align-items:center;">
+        ← Back
+      </button>
+    </div>
+    <script>
+      document.getElementById('back-to-store-btn').onclick = function() {
+        window.location.href = '../../index.html';
+      };
+    </script>
     <bnb-app class="mobile-fix">
       <div id="webar"></div>
     </bnb-app>
