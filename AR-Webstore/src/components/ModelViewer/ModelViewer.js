@@ -27,7 +27,7 @@ const modelViewerStyles = `
     --poster-color: transparent;
     --progress-bar-height: 5px;
     --progress-mask: transparent;
-    --progress-bar-color: #4285f4;
+    --progress-bar-color: linear-gradient(90deg, #e91e63 0%, #f48fb1 50%, #9c27b0 100%);
     
     /* Pre-rendering optimizations */
     --min-camera-orbit: auto auto auto;
@@ -39,7 +39,7 @@ const modelViewerStyles = `
   
   model-viewer::part(default-progress-bar) {
     height: 4px;
-    background-color: #4285f4;
+    background: linear-gradient(90deg, #e91e63 0%, #f48fb1 50%, #9c27b0 100%);
   }
 
   /* Ensure AR button is visible in v3.4.0 */
@@ -68,9 +68,9 @@ const modelViewerStyles = `
   }
   
   .ar-overlay-button {
-    background-color: #4285f4;
+    background: linear-gradient(90deg, #e91e63 0%, #f48fb1 50%, #9c27b0 100%);
     border: none;
-    border-radius: 30px;
+    border-radius: 8px;
     color: white;
     padding: 12px 18px;
     font-weight: bold;
@@ -81,12 +81,12 @@ const modelViewerStyles = `
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     transition: all 0.2s ease;
-    animation: pulse 2s infinite;
   }
   
   .ar-overlay-button:hover {
-    background-color: #3367d6;
-    animation: none;
+    box-shadow: 0 8px 24px rgba(233, 30, 99, 0.25), 0 1.5px 6px rgba(156, 39, 176, 0.12);
+    transform: translateY(-4px);
+    background: linear-gradient(90deg, #e91e63 0%, #f48fb1 50%, #9c27b0 100%);
   }
   
   .ar-overlay-button:active {
@@ -275,8 +275,8 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
               }
             }}
             className="ar-overlay-button"
+            style={{ background: "linear-gradient(90deg, #e91e63 0%, #f48fb1 50%, #9c27b0 100%)", color: "white" }}
           >
-            <span role="img" aria-label="AR icon" style={{ marginRight: "8px", fontSize: "18px" }}>👋</span> 
             View in AR
           </button>
         </div>

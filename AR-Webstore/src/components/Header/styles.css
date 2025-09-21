@@ -1,11 +1,11 @@
 /* styles for header */
 :root {
-  --Bg: #000;
-  --text: #fff;
+  --Bg: #fff !important;
+  --text: #111 !important;
 }
 header {
   align-items: center;
-  background: var(--Bg);
+  background: var(--Bg) !important;
   display: flex;
   padding: 0.8rem;
 }
@@ -54,12 +54,30 @@ nav .navtop {
 }
 
 .desktop-nav a {
-  color: var(--text);
+  color: #111 !important;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700 !important;
   text-decoration: none;
   transition: 0.5s all ease-in-out;
   position: relative;
+}
+
+.desktop-nav a:hover {
+  color: #FF3F6C !important;
+}
+
+.desktop-nav a::before {
+  content: "";
+  background: linear-gradient(to right, #FF3F6C, #9333ea);
+  position: absolute;
+  left: 0;
+  bottom: -0.3rem;
+  height: 2px;
+  width: 0;
+  transition: 0.3s ease-in-out;
+}
+.desktop-nav a:hover::before {
+  width: 90%;
 }
 
 a::before {
@@ -86,11 +104,41 @@ nav .project-title {
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;
-  color: var(--text);
+  color: #111 !important;
 }
 
 nav .project-title:hover {
   text-decoration: none;
+}
+
+/* Remove hover effect on logo link */
+.header-flex a[href="/"]:hover, .header-flex a[href="/"]:active, .header-flex a[href="/"]:focus {
+  background: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Remove hover effect on logo image and link */
+.header-flex a[href="/"]:hover,
+.header-flex a[href="/"]:active,
+.header-flex a[href="/"]:focus,
+.header-flex a[href="/"]:hover img,
+.header-flex a[href="/"]:active img,
+.header-flex a[href="/"]:focus img {
+  background: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  filter: none !important;
+}
+
+/* Remove underline/gradient line on logo hover */
+.header-flex > a[href="/home"]::before,
+.header-flex > a[href="/home"]:hover::before,
+.header-flex > a[href="/home"]:active::before,
+.header-flex > a[href="/home"]:focus::before {
+  content: none !important;
+  background: none !important;
+  display: none !important;
 }
 
 /* styles for mobile menu icon */
@@ -113,6 +161,19 @@ nav .project-title:hover {
 
 .active .secondbar:nth-child(2) {
   transform: rotate(-45deg);
+}
+
+.header-icons-corner {
+  position: static;
+  margin-left: 40rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 10;
+}
+
+.header-icons {
+  display: none;
 }
 
 /* Media Query for small screens */
@@ -171,5 +232,12 @@ nav .project-title:hover {
     text-decoration: none;
 
     margin-bottom: 20%; /* Add margin between the links */
+  }
+}
+
+@media (max-width: 900px) {
+  .header-icons-corner {
+    margin-left: 6rem;
+    gap: 1rem;
   }
 }

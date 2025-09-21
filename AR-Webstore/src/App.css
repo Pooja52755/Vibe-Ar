@@ -458,3 +458,125 @@
     margin-top: 5px;
   }
 }
+
+.arbutton {
+  background-image: linear-gradient(to right, #FF3F6C, #8E44AD);
+  color: #fff;
+  border: 1px solid #8E44AD;
+}
+
+.add-icon {
+  background: linear-gradient(to right, #FF3F6C, #8E44AD);
+  color: #fff;
+}
+
+.help-btn,
+.fullscreen-btn,
+.annotate-btn {
+  background: linear-gradient(to right, #FF3F6C, #8E44AD);
+  color: #fff;
+}
+
+.close {
+  color: #fff;
+  background: linear-gradient(to right, #FF3F6C, #8E44AD);
+}
+
+.header {
+  background: #fff;
+  color: #111;
+}
+.header a,
+.header .icon,
+.header .nav-link {
+  color: #111;
+  transition: color 0.2s;
+}
+.header a:hover,
+.header .icon:hover,
+.header .nav-link:hover {
+  color: #333;
+}
+
+header, .dashboard {
+  background: #fff !important;
+  color: #111 !important;
+}
+.dashboard {
+  min-height: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  box-shadow: 0 12px 48px 0 rgba(0,0,0,0.22), 0 4px 16px 0 rgba(0,0,0,0.18), 0 1.5px 6px 0 rgba(0,0,0,0.12);
+}
+
+.dashboard, .dashboard * {
+  color: #1a1a1a !important;
+}
+.dashboard h1, .dashboard h2, .dashboard h3, .dashboard h4, .dashboard h5, .dashboard h6, .dashboard .dashboard-heading {
+  color: #111 !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em;
+}
+.dashboard label, .dashboard .dashboard-label {
+  color: #222 !important;
+  font-weight: 500 !important;
+}
+.dashboard p, .dashboard .dashboard-desc, .dashboard .dashboard-description, .dashboard .dashboard-text {
+  color: #444 !important;
+  font-weight: 400 !important;
+}
+
+.dashboard, .dashboard * {
+  color: #111 !important;
+  text-shadow: none !important;
+}
+
+.dashboard a,
+.dashboard .dashboard-link,
+.dashboard .project-title {
+  color: #111 !important;
+  font-weight: 600 !important;
+  text-decoration: none;
+}
+.dashboard a:hover,
+.dashboard .dashboard-link:hover,
+.dashboard .project-title:hover {
+  color: #FF3F6C !important;
+  text-decoration: underline;
+}
+
+.highlight {
+  background: linear-gradient(to right, #FF3F6C, #9333ea);
+  color: #fff;
+}
+
+.dashboard {
+  background: #fff !important;
+  color: #111 !important;
+}
+.dashboard h1, .dashboard h2, .dashboard h3, .dashboard h4, .dashboard h5, .dashboard h6, .dashboard .dashboard-heading {
+  color: #111 !important;
+  font-weight: 600 !important;
+}
+.dashboard label, .dashboard .dashboard-label {
+  color: #222 !important;
+  font-weight: 500 !important;
+}
+.dashboard p, .dashboard .dashboard-desc, .dashboard .dashboard-description, .dashboard .dashboard-text {
+  color: #333 !important;
+  font-weight: 400 !important;
+}
+.dashboard a {
+  color: #0a0a0a !important;
+  text-decoration: underline;
+}
+.dashboard .dashboard-muted, .dashboard .dashboard-note {
+  color: #666 !important;
+}
+
+.dashboard, .dashboard * {
+  color: #000 !important;
+  background: transparent !important;
+  -webkit-text-fill-color: #000 !important;
+  text-shadow: none !important;
+}

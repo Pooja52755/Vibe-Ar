@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faUpload, faTimes, faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 import GeminiService from "../../services/GeminiService";
 import "./AISearch.css";
+import useTypingEffect from "./useTypingEffect";
+import TrendingNowSection from "./TrendingNowSection";
 
 const AISearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,6 +19,11 @@ const AISearch = () => {
   // Gemini API key would normally be stored securely
   // For demo purposes, we'll set it directly (in production, use environment variables)
   const GEMINI_API_KEY = "AIzaSyAilrrFYiO9jT62gzfkLfKeubSsiJ7rq4g";
+
+  const typingPlaceholder = useTypingEffect([
+    "What's the vibe you're going for?",
+    "Drop your search"
+  ], 60, 1200);
 
   const handleSearch = async () => {
     if (!searchQuery && uploadedImages.length === 0) return;
@@ -68,7 +75,9 @@ const AISearch = () => {
   };
 
   const triggerFileInput = () => {
-    fileInputRef.current.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   // Select an example search prompt
@@ -101,12 +110,8 @@ const AISearch = () => {
   return (
     <div className="ai-search-container">
       <div className="ai-search-header">
-        <h1>GenAI-Powered Discovery</h1>
-        <p>
-          Revolutionize your search with Generative AI. Discover products by describing a "vibe" 
-          or abstract aesthetic (e.g., "outfits for a rainy day in Bengaluru") or combine images 
-          with text prompts ("Find a similar top, but in a pastel color").
-        </p>
+        <h1>Hunt</h1>
+        {/* Removed marketing/feature text as requested */}
       </div>
 
       <div className="search-box">
@@ -114,7 +119,7 @@ const AISearch = () => {
           <div className="search-text-input">
             <input
               type="text"
-              placeholder="Describe what you're looking for or ask a question..."
+              placeholder={typingPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -123,74 +128,59 @@ const AISearch = () => {
               <FontAwesomeIcon icon={faSearch} /> Search
             </button>
           </div>
-          
-          <div className="example-prompts">
-            <p>Try these example searches:</p>
-            <div className="example-chips">
-              <span className="example-chip" onClick={() => selectExamplePrompt("Outfits for a rainy day in Bengaluru")}>
-                Rainy day outfit
-              </span>
-              <span className="example-chip" onClick={() => selectExamplePrompt("Professional attire for a job interview")}>
-                Interview outfit
-              </span>
-              <span className="example-chip" onClick={() => selectExamplePrompt("Pastel colored sarees for summer")}>
-                Pastel sarees
-              </span>
-              <span className="example-chip" onClick={() => selectExamplePrompt("Find similar sarees but in pastel colors")}>
-                Similar in pastel
-              </span>
-              <span className="example-chip" onClick={() => selectExamplePrompt("Pink saree with elegant design")}>
-                Pink saree
-              </span>
-              <span className="example-chip" onClick={() => selectExamplePrompt("Blue formal shirt with matching accessories")}>
-                Complete outfit
-              </span>
-            </div>
+        </div>
+        <div className="example-prompts">
+          <p>Try these example searches:</p>
+          <div className="example-chips">
+            <span className="example-chip" onClick={() => selectExamplePrompt("Outfits for a rainy day in Bengaluru")}>Rainy day outfit</span>
+            <span className="example-chip" onClick={() => selectExamplePrompt("Professional attire for a job interview")}>Interview outfit</span>
+            <span className="example-chip" onClick={() => selectExamplePrompt("Pastel colored sarees for summer")}>Pastel sarees</span>
+            <span className="example-chip" onClick={() => selectExamplePrompt("Find similar sarees but in pastel colors")}>Similar in pastel</span>
+            <span className="example-chip" onClick={() => selectExamplePrompt("Pink saree with elegant design")}>Pink saree</span>
+            <span className="example-chip" onClick={() => selectExamplePrompt("Blue formal shirt with matching accessories")}>Complete outfit</span>
           </div>
-
-          <div className="image-upload-section">
-            <p>Upload images to find similar items or combine with your text query:</p>
-            <div className="image-help">
-              <span>Upload a saree image and search for "similar but in pastel colors" or try with our sample images: </span>
-              <a href="/png images/pink_saree.jpg" download>Pink Saree</a>,
-              <a href="/png images/blue_shirt.webp" download>Blue Shirt</a>,
-              <a href="/png images/pink_shirt.webp" download>Pink Shirt</a>
-            </div>
-            <div className="image-upload-container">
-              {uploadedImages.map((img, index) => (
-                <div key={index} style={{ position: 'relative' }}>
-                  <img 
-                    src={img.preview} 
-                    alt={`Uploaded ${index}`} 
-                    className="uploaded-image-preview" 
-                  />
-                  <button 
-                    className="remove-image-btn" 
-                    onClick={() => removeImage(index)}
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </button>
-                </div>
-              ))}
-              
-              {uploadedImages.length < 3 && (
-                <div 
-                  className="image-upload-box" 
-                  onClick={triggerFileInput}
+        </div>
+        <div className="image-upload-section">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <label className="aisearch-label">
+              Drop your image, add your vibe:
+            </label>
+            {uploadedImages.length < 3 && (
+              <div 
+                className="image-upload-box" 
+                onClick={triggerFileInput}
+              >
+                Upload image
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: 'none' }}
+              ref={fileInputRef}
+              onChange={handleImageUpload}
+            />
+          </div>
+          <div className="image-help">
+            {/* Restore any previous prompt/sample image links if they existed */}
+          </div>
+          <div className="image-upload-container">
+            {uploadedImages.map((img, index) => (
+              <div key={index} style={{ position: 'relative' }}>
+                <img 
+                  src={img.preview} 
+                  alt={`Uploaded ${index}`} 
+                  className="uploaded-image-preview" 
+                />
+                <button 
+                  className="remove-image-btn" 
+                  onClick={() => removeImage(index)}
                 >
-                  <FontAwesomeIcon icon={faUpload} />
-                  <p>Upload Image</p>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleImageUpload}
-                    style={{ display: 'none' }}
-                    accept="image/*"
-                    multiple={uploadedImages.length === 0}
-                  />
-                </div>
-              )}
-            </div>
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -268,77 +258,7 @@ const AISearch = () => {
                 <p>Try searching for something like "outfits for a rainy day" or "casual party wear"</p>
               </div>
             ) : (
-              <div className="example-searches">
-                <h3>Discover Products with AI</h3>
-                <p>Try these powerful AI search capabilities:</p>
-                
-                <div className="example-search-section">
-                  <h4>Search by Description or Feeling</h4>
-                  <p>For example: "Professional outfits for a job interview" or "Casual summer look"</p>
-                  <div className="example-search-preview">
-                    <img src="/png images/coll2_4.png" alt="Professional outfit" />
-                    <img src="/png images/coll1_2.png" alt="Casual outfit" />
-                  </div>
-                </div>
-                
-                <div className="example-search-section">
-                  <h4>Find Similar Items with Color Variations</h4>
-                  <p>Upload images of pink sarees and ask for "similar but in pastel colors"</p>
-                  <div className="example-search-preview">
-                    <div className="search-flow">
-                      <div className="image-group">
-                        <img src="/png images/pink_saree.jpg" alt="Pink saree" className="smaller-preview" />
-                        <div className="image-label">Pink Saree</div>
-                      </div>
-                      <span className="plus-icon">+</span>
-                      <div className="example-prompt">"Find similar sarees but in pastel colors"</div>
-                      <span className="arrow-icon">→</span>
-                      <div className="results-group">
-                        <img src="/png images/green.jpg" alt="Pastel green saree" className="smaller-preview" />
-                        <img src="/png images/pastel_pink_saree.webp" alt="Pastel pink saree" className="smaller-preview" />
-                        <div className="image-label">Pastel Color Sarees</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="example-search-section">
-                  <h4>Get AI-Powered Outfit Suggestions</h4>
-                  <p>Search for an item and receive AI suggestions for complementary products</p>
-                  <div className="example-search-preview">
-                    <div className="search-flow">
-                      <div className="example-prompt">"Pink saree for wedding"</div>
-                      <span className="arrow-icon">→</span>
-                      <div className="results-group">
-                        <img src="/png images/pink_saree.jpg" alt="Pink saree" className="smaller-preview" />
-                        <div className="image-label">Search Results</div>
-                      </div>
-                      <span className="plus-icon">+</span>
-                      <div className="results-group">
-                        <img src="/png images/coll4_2.png" alt="Matching jewelry" className="smaller-preview" />
-                        <div className="image-label">AI Suggestions</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="example-search-section">
-                  <h4>Search for a Specific Occasion</h4>
-                  <p>Try "Outfits for a rainy day in Bengaluru" or "Wedding guest attire"</p>
-                </div>
-                
-                <div className="example-search-section">
-                  <h4>Find Sarees by Color</h4>
-                  <p>Try "Pink silk saree" or "Pastel green saree for wedding"</p>
-                  <div className="example-search-preview">
-                    <div className="search-flow">
-                      <div className="example-prompt">"Pink silk saree"</div>
-                      <span className="arrow-icon">→</span>
-                      <img src="/png images/pink_saree.jpg" alt="Pink saree" className="smaller-preview" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <TrendingNowSection />
             )}
           </>
         )}

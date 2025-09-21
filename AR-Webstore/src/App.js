@@ -13,6 +13,7 @@ import SignIn from "./components/SignIn/Signin";
 import WishList from "./components/Wishlist/WishList";
 import AISearch from "./components/AISearch/AISearch";
 import AiSuggester from "./components/AiSuggester/AiSuggester";
+import StyleVibeLanding from "./components/StyleVibeLanding/StyleVibeLanding";
 import { useState } from "react";
 
 const App = () => {
@@ -30,8 +31,10 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <Routes>
+          <Route path="/" element={<StyleVibeLanding />} />
+          <Route path="/home" element={<StyleVibeLanding />} />
           <Route
-            path="/"
+            path="/magic-items"
             element={
               <ProductList
                 addToWishlist={addToWishlist}

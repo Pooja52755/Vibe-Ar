@@ -132,6 +132,9 @@ export default function App() {
         onAISearchClick={() => setIsAISearchOpen(true)}
         onARClick={() => setIsAROpen(true)}
       />
+
+      {/* Thin black horizontal line above main content */}
+      <div className="aurafit-divider" />
       
       <main>
         <HeroSection 

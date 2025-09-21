@@ -2663,7 +2663,7 @@
   }
 
   .text-gray-400 {
-    color: var(--color-gray-400);
+    color: var (--color-gray-400);
   }
 
   .text-gray-500 {
@@ -2846,7 +2846,7 @@
 
   .shadow-xl {
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, #0000001a), 0 8px 10px -6px var(--tw-shadow-color, #0000001a);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var (--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 
   .shadow-xs {
@@ -3040,7 +3040,7 @@
       --tw-scale-x: 110%;
       --tw-scale-y: 110%;
       --tw-scale-z: 110%;
-      scale: var(--tw-scale-x) var(--tw-scale-y);
+      scale: var(--tw-scale-x) var (--tw-scale-y);
     }
   }
 
@@ -4446,7 +4446,7 @@
   }
 
   .data-\[variant\=destructive\]\:text-destructive[data-variant="destructive"] {
-    color: var(--destructive);
+    color: var (--destructive);
   }
 
   .data-\[variant\=destructive\]\:focus\:bg-destructive\/10[data-variant="destructive"]:focus {
@@ -5367,6 +5367,14 @@
     a.\[a\&\]\:hover\:text-accent-foreground:hover {
       color: var(--accent-foreground);
     }
+  }
+
+  .aurafit-divider {
+    width: 100%;
+    height: 1px;
+    background: #111;
+    margin: 0 0 8px 0;
+    display: block;
   }
 }
 
