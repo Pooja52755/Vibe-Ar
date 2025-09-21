@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fff4fa;
             min-height: 100vh;
             padding: 20px;
         }
@@ -21,23 +21,28 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background: #fff4fa;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255,62,108,0.08);
         }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
-            color: white;
+            color: #111;
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: none;
+            color: #111;
         }
 
         .header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 1;
+            color: #111;
         }
 
         .product-grid {
@@ -48,10 +53,10 @@
         }
 
         .product-category {
-            background: white;
+            background: #fff4fa;
             border-radius: 15px;
             padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -194,7 +199,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 style="color:#ff3e6c">All products</h1>
+            <h1>All products</h1>
             <p>Discover our premium beauty products with AR try-on technology</p>
         </div>
 

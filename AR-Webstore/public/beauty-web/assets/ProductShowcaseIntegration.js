@@ -8,11 +8,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function createProductShowcaseButton() {
         const button = document.createElement('button');
         button.innerHTML = `
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z" fill="white"/>
-                <path d="M9 8H11V17H9V8ZM13 8H15V17H13V8Z" fill="white"/>
-            </svg>
-            <span>Products</span>
+            <span style="display:flex;align-items:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61l1.38-7.39H6"/></svg>
+              <span>All products</span>
+            </span>
         `;
         button.className = 'product-showcase-btn';
         button.style.cssText = `
@@ -20,18 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 20px;
             right: 20px;
             z-index: 10000;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ff3e6c;
             color: white;
             border: none;
-            border-radius: 25px;
-            padding: 12px 20px;
-            font-size: 14px;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(255,62,108,0.15);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         `;
         
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: #fff4fa;
             z-index: 10001;
             display: none;
             opacity: 0;
@@ -75,16 +74,16 @@ document.addEventListener('DOMContentLoaded', function() {
             width: 90%;
             max-width: 1200px;
             height: 90%;
-            background: white;
+            background: #fff4fa;
             border-radius: 20px;
             overflow: hidden;
             transition: transform 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(255,62,108,0.10);
         `;
         
         const header = document.createElement('div');
         header.style.cssText = `
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ff3e6c;
             color: white;
             padding: 20px;
             display: flex;
@@ -130,7 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
             width: 100%;
             height: calc(100% - 80px);
             border: none;
-            background: white;
+            background: #fff4fa;
+            scroll-behavior: smooth;
         `;
         
         header.appendChild(title);
@@ -139,6 +139,15 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(iframe);
         overlay.appendChild(container);
         document.body.appendChild(overlay);
+        
+        // Add smooth scroll style to document
+        const smoothScrollStyle = document.createElement('style');
+        smoothScrollStyle.textContent = `
+            #product-showcase-overlay * {
+                scroll-behavior: smooth !important;
+            }
+        `;
+        document.head.appendChild(smoothScrollStyle);
         
         // Close on overlay click
         overlay.addEventListener('click', function(e) {
