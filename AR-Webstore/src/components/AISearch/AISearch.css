@@ -62,6 +62,63 @@
   border-color: #e91e63;
 }
 
+.search-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.voice-button {
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  min-width: 80px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.voice-button:hover {
+  background-color: #7b1fa2;
+  transform: translateY(-1px);
+}
+
+.voice-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.voice-button.listening {
+  background-color: #ff5722;
+  animation: pulse 1.5s infinite;
+}
+
+.voice-button.listening:hover {
+  background-color: #e64a19;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 87, 34, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 87, 34, 0);
+  }
+}
+
 .search-button {
   background-color: #e91e63;
   color: white;
@@ -76,11 +133,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .search-button:hover {
   background-color: #ff4081;
+  transform: translateY(-1px);
 }
 
 .example-prompts {
@@ -91,6 +149,19 @@
   font-size: 0.9rem;
   color: #666;
   margin-bottom: 8px;
+}
+
+.voice-tip {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #f3e5f5 0%, #fce4ec 100%);
+  border-radius: 6px;
+  border-left: 3px solid #e91e63;
+  font-size: 0.85rem;
+  color: #880e4f;
+  font-weight: 500;
 }
 
 .example-chips {
@@ -668,5 +739,47 @@
   }
   .trending-img {
     height: 160px;
+  }
+}
+
+/* Responsive design for voice search buttons */
+@media (max-width: 768px) {
+  .search-buttons {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .voice-button,
+  .search-button {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .search-text-input {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .voice-tip {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .voice-button,
+  .search-button {
+    padding: 0 12px;
+    font-size: 0.9rem;
+    height: 40px;
+  }
+  
+  .ai-search-header h1 {
+    font-size: 2rem;
+  }
+  
+  .search-box {
+    padding: 20px;
   }
 }

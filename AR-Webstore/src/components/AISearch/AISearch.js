@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faUpload, faTimes, faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faUpload, faTimes, faStar, faStarHalfAlt, faMicrophone, faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
 import GeminiService from "../../services/GeminiService";
 import "./AISearch.css";
 import useTypingEffect from "./useTypingEffect";
@@ -14,7 +14,10 @@ const AISearch = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [suggestionText, setSuggestionText] = useState("");
   const [aiExplanation, setAiExplanation] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [voiceSupported, setVoiceSupported] = useState(false);
   const fileInputRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   // Gemini API key would normally be stored securely
   // For demo purposes, we'll set it directly (in production, use environment variables)
@@ -24,6 +27,125 @@ const AISearch = () => {
     "What's the vibe you're going for?",
     "Drop your search"
   ], 60, 1200);
+
+  // Initialize voice recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      setVoiceSupported(true);
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      
+      if (recognitionRef.current) {
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = 'en-US';
+        
+        recognitionRef.current.onstart = () => {
+          setIsListening(true);
+          showVoiceNotification('Listening... Speak now!', 'listening');
+        };
+        
+        recognitionRef.current.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          setSearchQuery(transcript);
+          showVoiceNotification(`Voice input: "${transcript}"`, 'success');
+          // Auto-trigger search after a short delay
+          setTimeout(() => {
+            handleSearch();
+          }, 500);
+        };
+        
+        recognitionRef.current.onerror = (event) => {
+          setIsListening(false);
+          let errorMessage = 'Voice recognition error occurred.';
+          switch(event.error) {
+            case 'no-speech':
+              errorMessage = 'No speech detected. Please try again.';
+              break;
+            case 'audio-capture':
+              errorMessage = 'Microphone not accessible. Please check permissions.';
+              break;
+            case 'not-allowed':
+              errorMessage = 'Microphone access denied. Please allow microphone access and try again.';
+              break;
+            default:
+              errorMessage = `Voice recognition error: ${event.error}`;
+          }
+          showVoiceNotification(errorMessage, 'error');
+        };
+        
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
+      }
+    }
+  }, []);
+
+  // Voice search functionality
+  const startVoiceSearch = () => {
+    if (!voiceSupported) {
+      showVoiceNotification('Voice search is not supported in this browser. Please try Chrome, Edge, or Safari.', 'error');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    try {
+      recognitionRef.current?.start();
+    } catch (error) {
+      showVoiceNotification('Could not start voice recognition. Please try again.', 'error');
+    }
+  };
+
+  // Show voice notifications
+  const showVoiceNotification = (message, type = 'info') => {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${type === 'error' ? '#ff5252' : type === 'success' ? '#4caf50' : type === 'listening' ? '#ff9800' : '#2196f3'};
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      z-index: 10000;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      max-width: 300px;
+      word-wrap: break-word;
+      animation: slideIn 0.3s ease-out;
+    `;
+    notification.textContent = message;
+
+    // Add animation styles if not already present
+    if (!document.getElementById('voice-notification-styles')) {
+      const style = document.createElement('style');
+      style.id = 'voice-notification-styles';
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    document.body.appendChild(notification);
+
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+      notification.style.animation = 'slideIn 0.3s ease-out reverse';
+      setTimeout(() => {
+        if (notification.parentElement) {
+          notification.remove();
+        }
+      }, 300);
+    }, 4000);
+  };
 
   const handleSearch = async () => {
     if (!searchQuery && uploadedImages.length === 0) return;
@@ -124,13 +246,38 @@ const AISearch = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             />
-            <button className="search-button" onClick={handleSearch}>
-              <FontAwesomeIcon icon={faSearch} /> Search
-            </button>
+            <div className="search-buttons">
+              <button 
+                className={`voice-button ${isListening ? 'listening' : ''}`}
+                onClick={startVoiceSearch}
+                disabled={!voiceSupported}
+                title={
+                  !voiceSupported 
+                    ? 'Voice search not supported in this browser' 
+                    : isListening 
+                      ? 'Stop voice input' 
+                      : 'Start voice search'
+                }
+              >
+                <FontAwesomeIcon 
+                  icon={isListening ? faMicrophoneSlash : faMicrophone} 
+                />
+                {isListening ? ' Listening...' : ' Voice'}
+              </button>
+              <button className="search-button" onClick={handleSearch}>
+                <FontAwesomeIcon icon={faSearch} /> Search
+              </button>
+            </div>
           </div>
         </div>
         <div className="example-prompts">
           <p>Try these example searches:</p>
+          {voiceSupported && (
+            <div className="voice-tip">
+              <FontAwesomeIcon icon={faMicrophone} style={{ color: '#e91e63', marginRight: '8px' }} />
+              <span>New! Use the Voice button to speak your search queries naturally</span>
+            </div>
+          )}
           <div className="example-chips">
             <span className="example-chip" onClick={() => selectExamplePrompt("Outfits for a rainy day in Bengaluru")}>Rainy day outfit</span>
             <span className="example-chip" onClick={() => selectExamplePrompt("Professional attire for a job interview")}>Interview outfit</span>
