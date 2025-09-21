@@ -1,7 +1,6 @@
 import "./About.css";
 import ContributorSection from './ContributorSection';
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import tick from './tick.png';
 import archery from './archery.png';
 import gun from './rightimg3.png'
@@ -9,7 +8,7 @@ import img1 from './prob1.jpg'
 import img2 from './prob2.jpg'
 import res1 from './resource1.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope , faArrowUp} from '@fortawesome/free-solid-svg-icons'
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
 
 const About = () => {
     useEffect(() => {
@@ -63,7 +62,7 @@ const About = () => {
                     <div className="aboutleft"><div className="aboutleftsec fromtop-anim">AR Webstore</div>
                         <p className="abouleftseccont fade-effect">A web application for immersive augmented reality shopping experiences.</p></div>
 
-                    <img src={gun} className="aboutrightsec" />
+                    <img src={gun} className="aboutrightsec" alt="AR Webstore banner" />
 
 
                 </div>
@@ -72,7 +71,7 @@ const About = () => {
             <div>
                 <h1 className="second-head fromtop-anim">Why AR WEBSTORE ?</h1>
                 <div className="prob-box">
-                    <img src={img1} className="prob-img left-img-effect" />
+                    <img src={img1} className="prob-img left-img-effect" alt="Traditional e-commerce problems illustration" />
                     <div className="about-prob fade-effect">
                         <p className="about-prob-header"><i>Problem</i></p>
                         <p className="about-prob-sol">Traditional e-commerce platforms fail to deliver immersive product experiences,
@@ -92,23 +91,23 @@ const About = () => {
                             customers to make informed decisions, reduces return rates, and enhances
                             engagement, resulting in a more satisfying and immersive shopping journey.</p>
                     </div>
-                    <img src={img2} className="prob-img2 right-img-effect" />
+                    <img src={img2} className="prob-img2 right-img-effect" alt="AR shopping solution illustration" />
                 </div>
             </div>
             <div className="about-goals-box">
 
                 <div className="status fade-effect">
                     <h1 className="status-header fromtop-anim" style={{ "color": " rgb(19, 227, 19)" }}>Current Status</h1>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" /><p className="status-points fromtop-anim">E-commerce products with 3D models for 360° viewing</p></div>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" /><p className="status-points fromtop-anim">Photorealistic 3D models for immersive shopping experiences.</p></div>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" /><p className="status-points fromtop-anim">360° viewer for detailed inspection of chairs, frames, and cars.</p></div>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" /><p className="status-points fromtop-anim">Explore products in your space using augmented reality.</p></div>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" /><p className="status-points fromtop-anim">Augmented reality for in-home product exploration.</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" alt="Check mark" /><p className="status-points fromtop-anim">E-commerce products with 3D models for 360° viewing</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" alt="Check mark" /><p className="status-points fromtop-anim">Photorealistic 3D models for immersive shopping experiences.</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" alt="Check mark" /><p className="status-points fromtop-anim">360° viewer for detailed inspection of chairs, frames, and cars.</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" alt="Check mark" /><p className="status-points fromtop-anim">Explore products in your space using augmented reality.</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={tick} className="fromtop-anim" alt="Check mark" /><p className="status-points fromtop-anim">Augmented reality for in-home product exploration.</p></div>
                 </div>
                 <div className="status fade-effect">
                     <h1 className="status-header fromtop-anim" style={{ "color": "rgb(9, 16, 250)" }}>Future Goals</h1>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={archery} className="fromtop-anim" /><p className="status-points fromtop-anim">Build an e-commerce platform providing an immersive shopping experience.</p></div>
-                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={archery} className="fromtop-anim" /><p className="status-points fromtop-anim">Make the products interactive in a real environment rather than just demonstrating static
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={archery} className="fromtop-anim" alt="Target icon" /><p className="status-points fromtop-anim">Build an e-commerce platform providing an immersive shopping experience.</p></div>
+                    <div style={{ "display": "flex" }}><img style={{ "height": "40px", "display": "block", "margin": "4vh 2vh 0 0" }} src={archery} className="fromtop-anim" alt="Target icon" /><p className="status-points fromtop-anim">Make the products interactive in a real environment rather than just demonstrating static
                         3D models using ML-AI.</p></div>
 
                 </div>
@@ -160,7 +159,7 @@ const About = () => {
                 </div>
             </div>
             <div><h1 className="second-head fromtop-anim">Project Admin</h1>
-                <a href="https://github.com/ShwetKhatri2001"><div className="about-admin-box fade-effect"><img className="about-admin-img" src="https://avatars.githubusercontent.com/u/56475750?v=4" /><p className="about-admin">Shwet Khatri</p></div></a></div>
+                <a href="https://github.com/ShwetKhatri2001"><div className="about-admin-box fade-effect"><img className="about-admin-img" src="https://avatars.githubusercontent.com/u/56475750?v=4" alt="Shwet Khatri" /><p className="about-admin">Shwet Khatri</p></div></a></div>
             <div><h1 className="second-head fromtop-anim" style={{ "marginTop": "13vh" }}>Contributors</h1>
                 <p className="second-head fromtop-anim" style={{ "color": "blue" }}><b>Credits go to these contributors:</b></p>
                 <ContributorSection />

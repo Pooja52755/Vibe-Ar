@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faUpload, faTimes, faStar, faStarHalfAlt, faMicrophone, faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faTimes, faStar, faStarHalfAlt, faMicrophone, faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
 import GeminiService from "../../services/GeminiService";
+import AIStyler from "../AIStyler/AIStyler";
 import "./AISearch.css";
 import useTypingEffect from "./useTypingEffect";
 import TrendingNowSection from "./TrendingNowSection";
@@ -16,6 +17,7 @@ const AISearch = () => {
   const [aiExplanation, setAiExplanation] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  const [showAIStyler, setShowAIStyler] = useState(false);
   const fileInputRef = useRef(null);
   const recognitionRef = useRef(null);
 
@@ -27,6 +29,38 @@ const AISearch = () => {
     "What's the vibe you're going for?",
     "Drop your search"
   ], 60, 1200);
+
+  // Search function (needs to be defined before useEffect)
+  const handleSearch = useCallback(async () => {
+    if (!searchQuery && uploadedImages.length === 0) return;
+
+    setIsSearching(true);
+    
+    try {
+      // Set the API key for the Gemini service
+      GeminiService.setApiKey(GEMINI_API_KEY);
+      
+      let response;
+      if (uploadedImages.length > 0) {
+        // If images are uploaded, use them in the search
+        const imageFiles = uploadedImages.map(img => img.file);
+        response = await GeminiService.searchWithTextAndImages(searchQuery, imageFiles);
+      } else {
+        // Text-only search
+        response = await GeminiService.searchWithText(searchQuery);
+      }
+      
+      setSearchResults(response.products);
+      setAiExplanation(response.explanation);
+      setSuggestions(response.suggestions || []);
+      setSuggestionText(response.suggestionText || "");
+    } catch (error) {
+      console.error("Error searching with Gemini:", error);
+      setAiExplanation("Sorry, there was an error processing your search. Please try again.");
+    } finally {
+      setIsSearching(false);
+    }
+  }, [searchQuery, uploadedImages, GEMINI_API_KEY]);
 
   // Initialize voice recognition
   useEffect(() => {
@@ -79,7 +113,7 @@ const AISearch = () => {
         };
       }
     }
-  }, []);
+  }, [handleSearch]);
 
   // Voice search functionality
   const startVoiceSearch = () => {
@@ -147,37 +181,6 @@ const AISearch = () => {
     }, 4000);
   };
 
-  const handleSearch = async () => {
-    if (!searchQuery && uploadedImages.length === 0) return;
-
-    setIsSearching(true);
-    
-    try {
-      // Set the API key for the Gemini service
-      GeminiService.setApiKey(GEMINI_API_KEY);
-      
-      let response;
-      if (uploadedImages.length > 0) {
-        // If images are uploaded, use them in the search
-        const imageFiles = uploadedImages.map(img => img.file);
-        response = await GeminiService.searchWithTextAndImages(searchQuery, imageFiles);
-      } else {
-        // Text-only search
-        response = await GeminiService.searchWithText(searchQuery);
-      }
-      
-      setSearchResults(response.products);
-      setAiExplanation(response.explanation);
-      setSuggestions(response.suggestions || []);
-      setSuggestionText(response.suggestionText || "");
-    } catch (error) {
-      console.error("Error searching with Gemini:", error);
-      setAiExplanation("Sorry, there was an error processing your search. Please try again.");
-    } finally {
-      setIsSearching(false);
-    }
-  };
-
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -236,180 +239,202 @@ const AISearch = () => {
         {/* Removed marketing/feature text as requested */}
       </div>
 
-      <div className="search-box">
-        <div className="search-input-container">
-          <div className="search-text-input">
-            <input
-              type="text"
-              placeholder={typingPlaceholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-            />
-            <div className="search-buttons">
-              <button 
-                className={`voice-button ${isListening ? 'listening' : ''}`}
-                onClick={startVoiceSearch}
-                disabled={!voiceSupported}
-                title={
-                  !voiceSupported 
-                    ? 'Voice search not supported in this browser' 
-                    : isListening 
-                      ? 'Stop voice input' 
-                      : 'Start voice search'
-                }
-              >
-                <FontAwesomeIcon 
-                  icon={isListening ? faMicrophoneSlash : faMicrophone} 
-                />
-                {isListening ? ' Listening...' : ' Voice'}
-              </button>
-              <button className="search-button" onClick={handleSearch}>
-                <FontAwesomeIcon icon={faSearch} /> Search
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="example-prompts">
-          <p>Try these example searches:</p>
-          {voiceSupported && (
-            <div className="voice-tip">
-              <FontAwesomeIcon icon={faMicrophone} style={{ color: '#e91e63', marginRight: '8px' }} />
-              <span>New! Use the Voice button to speak your search queries naturally</span>
-            </div>
-          )}
-          <div className="example-chips">
-            <span className="example-chip" onClick={() => selectExamplePrompt("Outfits for a rainy day in Bengaluru")}>Rainy day outfit</span>
-            <span className="example-chip" onClick={() => selectExamplePrompt("Professional attire for a job interview")}>Interview outfit</span>
-            <span className="example-chip" onClick={() => selectExamplePrompt("Pastel colored sarees for summer")}>Pastel sarees</span>
-            <span className="example-chip" onClick={() => selectExamplePrompt("Find similar sarees but in pastel colors")}>Similar in pastel</span>
-            <span className="example-chip" onClick={() => selectExamplePrompt("Pink saree with elegant design")}>Pink saree</span>
-            <span className="example-chip" onClick={() => selectExamplePrompt("Blue formal shirt with matching accessories")}>Complete outfit</span>
-          </div>
-        </div>
-        <div className="image-upload-section">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <label className="aisearch-label">
-              Drop your image, add your vibe:
-            </label>
-            {uploadedImages.length < 3 && (
-              <div 
-                className="image-upload-box" 
-                onClick={triggerFileInput}
-              >
-                Upload image
-              </div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              style={{ display: 'none' }}
-              ref={fileInputRef}
-              onChange={handleImageUpload}
-            />
-          </div>
-          <div className="image-help">
-            {/* Restore any previous prompt/sample image links if they existed */}
-          </div>
-          <div className="image-upload-container">
-            {uploadedImages.map((img, index) => (
-              <div key={index} style={{ position: 'relative' }}>
-                <img 
-                  src={img.preview} 
-                  alt={`Uploaded ${index}`} 
-                  className="uploaded-image-preview" 
-                />
-                <button 
-                  className="remove-image-btn" 
-                  onClick={() => removeImage(index)}
-                >
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* AI Features Toggle */}
+      <div className="ai-features-toggle">
+        <button 
+          className={`feature-toggle ${!showAIStyler ? 'active' : ''}`}
+          onClick={() => setShowAIStyler(false)}
+        >
+          🔍 Product Search
+        </button>
+        <button 
+          className={`feature-toggle ${showAIStyler ? 'active' : ''}`}
+          onClick={() => setShowAIStyler(true)}
+        >
+          💄 AI Makeup Styler
+        </button>
       </div>
 
-      <div className="search-results">
-        {isSearching ? (
-          <div className="results-loading">
-            <div className="spinner"></div>
-            <p>Searching with AI magic...</p>
-          </div>
-        ) : searchResults.length > 0 ? (
-          <>
-            <div className="ai-explanation">
-              <p>{aiExplanation}</p>
-            </div>
-            
-            <div className="search-results-container">
-              {searchResults.map((product, index) => (
-                <div className="product-card" key={index}>
-                  <img 
-                    src={product.img_url} 
-                    alt={product.name}
-                    className="product-image"
-                  />
-                  <div className="product-info">
-                    <div className="product-brand">{product.brand}</div>
-                    <div className="product-name">{product.name}</div>
-                    <div className="product-price">₹{product.price}</div>
-                    <div className="rating-container">
-                      <div className="rating-stars">
-                        {renderStarRating(product.rating)}
-                      </div>
-                      <div className="rating-count">
-                        ({product.no_of_rating})
-                      </div>
-                    </div>
-                    {product.sizes && product.sizes.length > 0 && (
-                      <div className="product-sizes">
-                        {product.sizes.map((size, i) => (
-                          <span key={i} className="size-tag">{size}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+      {showAIStyler ? (
+        <AIStyler />
+      ) : (
+        <>
+          <div className="search-box">
+            <div className="search-input-container">
+              <div className="search-text-input">
+                <input
+                  type="text"
+                  placeholder={typingPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                />
+                <div className="search-buttons">
+                  <button 
+                    className={`voice-button ${isListening ? 'listening' : ''}`}
+                    onClick={startVoiceSearch}
+                    disabled={!voiceSupported}
+                    title={
+                      !voiceSupported 
+                        ? 'Voice search not supported in this browser' 
+                        : isListening 
+                          ? 'Stop voice input' 
+                          : 'Start voice search'
+                    }
+                  >
+                    <FontAwesomeIcon 
+                      icon={isListening ? faMicrophoneSlash : faMicrophone} 
+                    />
+                    {isListening ? ' Listening...' : ' Voice'}
+                  </button>
+                  <button className="search-button" onClick={handleSearch}>
+                    <FontAwesomeIcon icon={faSearch} /> Search
+                  </button>
                 </div>
-              ))}
+              </div>
             </div>
-            
-            {suggestions && suggestions.length > 0 && (
-              <div className="product-suggestions">
-                <h3 className="suggestions-title">AI-Powered Suggestions</h3>
-                <p className="suggestions-description">{suggestionText}</p>
-                <div className="suggestions-container">
-                  {suggestions.map((product, index) => (
-                    <div className="suggestion-card" key={index}>
+            <div className="example-prompts">
+              <p>Try these example searches:</p>
+              {voiceSupported && (
+                <div className="voice-tip">
+                  <FontAwesomeIcon icon={faMicrophone} style={{ color: '#e91e63', marginRight: '8px' }} />
+                  <span>New! Use the Voice button to speak your search queries naturally</span>
+                </div>
+              )}
+              <div className="example-chips">
+                <span className="example-chip" onClick={() => selectExamplePrompt("Outfits for a rainy day in Bengaluru")}>Rainy day outfit</span>
+                <span className="example-chip" onClick={() => selectExamplePrompt("Professional attire for a job interview")}>Interview outfit</span>
+                <span className="example-chip" onClick={() => selectExamplePrompt("Pastel colored sarees for summer")}>Pastel sarees</span>
+                <span className="example-chip" onClick={() => selectExamplePrompt("Find similar sarees but in pastel colors")}>Similar in pastel</span>
+                <span className="example-chip" onClick={() => selectExamplePrompt("Pink saree with elegant design")}>Pink saree</span>
+                <span className="example-chip" onClick={() => selectExamplePrompt("Blue formal shirt with matching accessories")}>Complete outfit</span>
+              </div>
+            </div>
+            <div className="image-upload-section">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <label className="aisearch-label">
+                  Drop your image, add your vibe:
+                </label>
+                {uploadedImages.length < 3 && (
+                  <div 
+                    className="image-upload-box" 
+                    onClick={triggerFileInput}
+                  >
+                    Upload image
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  style={{ display: 'none' }}
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                />
+              </div>
+              <div className="image-help">
+                {/* Restore any previous prompt/sample image links if they existed */}
+              </div>
+              <div className="image-upload-container">
+                {uploadedImages.map((img, index) => (
+                  <div key={index} style={{ position: 'relative' }}>
+                    <img 
+                      src={img.preview} 
+                      alt={`Uploaded ${index}`} 
+                      className="uploaded-image-preview" 
+                    />
+                    <button 
+                      className="remove-image-btn" 
+                      onClick={() => removeImage(index)}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="search-results">
+            {isSearching ? (
+              <div className="results-loading">
+                <div className="spinner"></div>
+                <p>Searching with AI magic...</p>
+              </div>
+            ) : searchResults.length > 0 ? (
+              <>
+                <div className="ai-explanation">
+                  <p>{aiExplanation}</p>
+                </div>
+                
+                <div className="search-results-container">
+                  {searchResults.map((product, index) => (
+                    <div className="product-card" key={index}>
                       <img 
                         src={product.img_url} 
                         alt={product.name}
-                        className="suggestion-image"
+                        className="product-image"
                       />
-                      <div className="suggestion-info">
-                        <div className="suggestion-name">{product.name}</div>
-                        <div className="suggestion-price">₹{product.price}</div>
+                      <div className="product-info">
+                        <div className="product-brand">{product.brand}</div>
+                        <div className="product-name">{product.name}</div>
+                        <div className="product-price">₹{product.price}</div>
+                        <div className="rating-container">
+                          <div className="rating-stars">
+                            {renderStarRating(product.rating)}
+                          </div>
+                          <div className="rating-count">
+                            ({product.no_of_rating})
+                          </div>
+                        </div>
+                        {product.sizes && product.sizes.length > 0 && (
+                          <div className="product-sizes">
+                            {product.sizes.map((size, i) => (
+                              <span key={i} className="size-tag">{size}</span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            {searchQuery ? (
-              <div className="no-results">
-                <p>Try searching for something like "outfits for a rainy day" or "casual party wear"</p>
-              </div>
+                
+                {suggestions && suggestions.length > 0 && (
+                  <div className="product-suggestions">
+                    <h3 className="suggestions-title">AI-Powered Suggestions</h3>
+                    <p className="suggestions-description">{suggestionText}</p>
+                    <div className="suggestions-container">
+                      {suggestions.map((product, index) => (
+                        <div className="suggestion-card" key={index}>
+                          <img 
+                            src={product.img_url} 
+                            alt={product.name}
+                            className="suggestion-image"
+                          />
+                          <div className="suggestion-info">
+                            <div className="suggestion-name">{product.name}</div>
+                            <div className="suggestion-price">₹{product.price}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
-              <TrendingNowSection />
+              <>
+                {searchQuery ? (
+                  <div className="no-results">
+                    <p>Try searching for something like "outfits for a rainy day" or "casual party wear"</p>
+                  </div>
+                ) : (
+                  <TrendingNowSection />
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

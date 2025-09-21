@@ -95,7 +95,6 @@ const modelViewerStyles = `
 `;
 
 const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
-  const [selectedVariant, setSelectedVariant] = useState('default');
   const [display, setDisplay] = useState(false);
   const [ARSupported, setARSupported] = useState(false);
   const [annotate, setAnnotate] = useState(false);
@@ -128,7 +127,7 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
 
 
   const handleAnnotateClick = (annotation) => {
-    const { orbit, target, position } = annotation;
+    const { target, position } = annotation;
     model.current.cameraTarget = position;
     model.current.orbit = target
   }
@@ -183,35 +182,38 @@ const ModelViewer = ({ item, addToWishlist, removeFromWishlist, wishlist }) => {
 
   useEffect(() => {
     // Add custom event listener to handle AR activation
+    const handleActivateAR = () => {
+      try {
+        // Get the activateAR method from the model-viewer element
+        if (model.current.activateAR) {
+          model.current.activateAR();
+        } else {
+          // Fallback to clicking the AR button directly
+          const arButton = model.current.shadowRoot.querySelector('button.ar-button');
+          if (arButton) {
+            arButton.click();
+          } else {
+            console.warn('AR button not found in model-viewer shadow DOM');
+          }
+        }
+      } catch (error) {
+        console.error('Error activating AR:', error);
+      }
+    };
+
     if (model.current) {
       // For model-viewer version 3.4.0
-      model.current.addEventListener('activate-ar', () => {
-        try {
-          // Get the activateAR method from the model-viewer element
-          if (model.current.activateAR) {
-            model.current.activateAR();
-          } else {
-            // Fallback to clicking the AR button directly
-            const arButton = model.current.shadowRoot.querySelector('button.ar-button');
-            if (arButton) {
-              arButton.click();
-            } else {
-              console.warn('AR button not found in model-viewer shadow DOM');
-            }
-          }
-        } catch (error) {
-          console.error('Error activating AR:', error);
-        }
-      });
+      model.current.addEventListener('activate-ar', handleActivateAR);
     }
 
     return () => {
       // Clean up event listener
-      if (model.current) {
-        model.current.removeEventListener('activate-ar', () => {});
+      const currentModel = model.current;
+      if (currentModel) {
+        currentModel.removeEventListener('activate-ar', handleActivateAR);
       }
     };
-  }, [model]);
+  }, []);
 
   const handleAddToWishlist = () => {
     if (isInWishlist) {

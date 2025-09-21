@@ -59,7 +59,7 @@ const TrendingNowSection = () => (
         <span className="trending-icon">🔥</span>
         <h2 className="trending-title">Trending Now</h2>
       </div>
-      <a href="#" className="trending-viewall">View All</a>
+      <button className="trending-viewall">View All</button>
     </div>
     <div className="trending-grid">
       {trendingProducts.map((product, idx) => (

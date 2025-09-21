@@ -68,7 +68,7 @@ const StyleVibeLanding = () => {
             <span className="trending-icon">🔥</span>
             <h2 className="trending-title">Trending Now</h2>
           </div>
-          <a href="#" className="trending-viewall">View All</a>
+          <button className="trending-viewall">View All</button>
         </div>
         <div className="trending-grid">
           {/* Example trending products, replace with dynamic data if needed */}
