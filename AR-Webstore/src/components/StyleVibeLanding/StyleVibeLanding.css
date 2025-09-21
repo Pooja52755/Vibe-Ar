@@ -35,6 +35,8 @@ body {
 .hero-content {
     z-index: 2;
     max-width: 600px;
+    margin-left: 60px; /* Move content to the right */
+    margin-top: -40px; /* Move content up */
 }
 
 .hero h1 {
@@ -169,15 +171,20 @@ a.btn::before, a.btn-primary::before, a.btn-secondary::before {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: #e0e0e0;
+    background: rgba(224,224,224,0.5); /* transparent gray */
     cursor: pointer;
     transition: background 0.3s;
     border: 2px solid #fff;
+    box-shadow: none;
+    opacity: 1;
+    animation: none;
 }
 
 .dot.active {
     background: linear-gradient(135deg, #e91e63, #9c27b0);
     border: 2px solid #e91e63;
+    opacity: 1;
+    animation: none;
 }
 
 .btn:hover, .btn-primary:hover, .btn-secondary:hover {
@@ -328,4 +335,30 @@ a.btn::before, a.btn-primary::before, a.btn-secondary::before {
         margin-top: 2rem;
         background: none !important;
     }
+}
+
+.corner-img {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(233,30,99,0.10);
+  z-index: 1;
+}
+.top-left {
+  top: 24px;
+  left: 24px;
+}
+.top-right {
+  top: 24px;
+  right: 24px;
+}
+.bottom-left {
+  bottom: 24px;
+  left: 24px;
+}
+.bottom-right {
+  bottom: 24px;
+  right: 24px;
 }
