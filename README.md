@@ -17,8 +17,8 @@ From **AR-based furniture placement** to **AI-powered vibe searches**, and **vir
 ### 🔍 AI Search – *HUNT*
 - Search with **vibes/contexts** instead of keywords.  
 - Example:
-  - “Rainy day in Bengaluru” → Coats, boots, umbrellas 🌧️  
-  - “Professional interview day” → Sarees, blazers, formal heels 👠  
+  - “Rainy day in Bengaluru” → Coats,blazers  
+  - “Professional interview day” → Formal shirt,  
 - Suggests **scientific reasons** for each recommendation.  
 - Recommends **complementary products** (e.g., saree → jewelry, heels).  
 
@@ -37,12 +37,12 @@ From **AR-based furniture placement** to **AI-powered vibe searches**, and **vir
 ---
 
 ## 🛠️ Tech Stack
-- **Frontend:** React.js, Tailwind CSS / Material UI  
-- **Backend:** Node.js / FastAPI  
-- **Database:** MongoDB / PostgreSQL  
-- **AI/ML:** OpenAI / Gemini / HuggingFace models  
+- **Frontend:** React.js, Tailwind CSS / Material UI,Figma 
+- **Backend:** Node.js 
+- **Database:** S3  
+- **AI/ML:** Gemini
 - **AR:** Banuba SDK, WebAR, Three.js  
-- **Cloud & Deployment:** Vercel / Heroku / AWS  
+- **Cloud & Deployment:** Vercel 
 
 ---
 
@@ -52,10 +52,6 @@ From **AR-based furniture placement** to **AI-powered vibe searches**, and **vir
 - Empowers **women users** with smart styling suggestions.  
 - Bridges **fashion + science + AI** for the next-gen Myntra experience.  
 
----
-
-## 📸 Screenshots & Demo
-(Add your app screenshots / demo GIFs here)
 
 ---
 
